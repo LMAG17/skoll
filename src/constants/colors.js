@@ -1,0 +1,26 @@
+import { Platform } from "react-native";
+
+export default {
+  white: '#ffffff',
+  black: '#000000',
+  red: 'red',
+  grey: 'grey',
+  transparent: 'transparent',
+  primary: '#8c0613',
+  accent: '#df111d',
+  textGrey: '#676565',
+  sidePanelText: '#404040',
+  backgroundRed: '#d8050c',
+  navigationBarBorder: '#c3c3c3',
+  headerColorDark: '#8c0613',
+  headerColor: '#df111d',
+  backgroundGrey: '#ebecf0',
+  touchTextColor: '#708094',
+  disabledButton: '#d9d9d9',
+  disabledButtonText: '#777575',
+  enabledButton: '#e1111c',
+  enabledButtonText: '#fbdedf',
+  buttonShadow: '#a6abbd',
+  buttonBackground: '#6e6e6e',
+  blur: Platform.OS == 'ios' ? "rgba(3,3,3,0.6)" : "rgba(3,3,3,0.4)",
+};
