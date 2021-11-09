@@ -1,7 +1,9 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
+import { setConsumeService } from '../../../middlewares/consumeService/consumeServiceMiddleware';
 const apple = require('../../../assets/icon/apple.png');
 const facebook = require('../../../assets/icon/facebook.png');
 const phone = require('../../../assets/icon/phone.png');
@@ -93,7 +95,10 @@ const buttons = [
     },
 ]
 
-export default function LoginScreen(props) {
+export default function LoginScreen() {
+    const dispatch = useDispatch();
+    const serviceResponse = useSelector(state => state.serviceResponse);
+    console.log("serviceResponse", serviceResponse);
     return (
         <View style={styles.screen}>
             <View style={styles.container} >
@@ -119,7 +124,21 @@ export default function LoginScreen(props) {
                 <View>
                     {
                         buttons.map(button =>
-                            <TouchableOpacity style={button.style} key={button.title} onPress={() => { }}>
+                            <TouchableOpacity style={button.style} key={button.title} onPress={() => {
+                                dispatch(setConsumeService(
+                                    {
+                                        url: 'http://54.241.45.111:8090/user/register',
+                                        method: 'POST',
+                                        body: {
+                                            "firstname": "juam",
+                                            "lastName": "alvare",
+                                            "email": "juam.valim@gmail.com",
+                                            "cellPhone": "3000000000",
+                                            "city": "Villavicencio"
+                                        },
+                                    }
+                                ))
+                            }}>
                                 <View style={button.buttonRowStyle}>
                                     <Image
                                         style={button.imageStyle}
