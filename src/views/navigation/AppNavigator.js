@@ -3,9 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import LoginScreen from '../Screens/Authentication/Login';
 import Register from '../Screens/Authentication/Register';
+import ScreenOtpEmail from '../Screens/Authentication/ScreenOtpEmail';
 import HomeScreen from '../Screens/HomeScreen';
 import SplashScreen from '../Screens/SplashScreen';
+import FormRegister from '../Screens/FormRegister'
 import HomeTabs from './HomeTabs'
+import LoginFacebook from'../Screens/LoginFacebook'
 
 const Stack = createStackNavigator();
 var timerCloseSessionMain;
@@ -89,17 +92,33 @@ export default AppNAvigator = () => {
   return (
     <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }} >
-        {/* <Stack.Screen
+      <Stack.Screen
+        name="LoginFacebook"
+        options={{ gestureEnabled: false }}
+        component={LoginFacebook}
+      />
+      <Stack.Screen
+        name="LoginScreen"
+        options={{ gestureEnabled: false }}
+        component={LoginScreen}
+      />
+        <Stack.Screen
           name="Register"
           options={{ gestureEnabled: false }}
           component={Register}
-        /> */}
-        <Stack.Screen
-          name="LoginScreen"
-          options={{ gestureEnabled: false }}
-          component={LoginScreen}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
+          name="FormRegister"
+          options={{ gestureEnabled: false }}
+          component={FormRegister}
+        />
+        <Stack.Screen
+          name="ValidateOtpEmail"
+          options={{ gestureEnabled: false }}
+          component={ScreenOtpEmail}
+        />
+
+      {/*   <Stack.Screen
           name="Pantalla Principal"
           options={{ gestureEnabled: false }}
         >
