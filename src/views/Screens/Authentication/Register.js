@@ -1,60 +1,39 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
-import { config } from '../../../constants/config';
-import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware';
-import { generic } from '../../../utils/Services';
+import React, { useState } from 'react'
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
+export default function Register() {
+    const [data, setdata] = useState({})
 
-
-export default function Register(props) {
-    const [data, setData] = useState({});
-    const dispatch = useDispatch();
-    const sessionId = useSelector(state => state.sessionId);
-
-    const handleChange = (key, value) => {
-        setData({
+    const handlerChange = (key, value) => {
+        setdata({
             ...data,
-            [key]: value,
-            
-            "cellPhonePrefix": "+57"
+            [key]: value
         })
-
-    }
-    const handleGetPreRegister = async () => {
-        console.log("serviceResponse", sessionId);
-        const url = `${config.baseUrl}${config.apiUser}register`;
-        try {
-            let responsePreRegister = await generic(url, 'POST', data)
-            console.log("RESPUESTA_REGISTRO", responsePreRegister);
-            console.log(responsePreRegister.data.sessionId);
-            dispatch(setSessionId(responsePreRegister.data.sessionId))
-            props.navigation.navigate('ValidateOtpEmail')
-        } catch (error) {
-            console.log("ERROR DE VISTA", error);
-        }
+        console.log("data", data);
     }
 
     return (
-        <View style={styles.container} >
-            <View style={styles.containerTitle}>
-                <Text style={styles.titleStyle}>{"Confirma tus datos \nantes de continuar"}</Text>
-            </View>
-            <View style={styles.form}>
-
-                <Text style={styles.text}>Nombres</Text>
-                <TextInput style={styles.input} onChangeText={text => handleChange('firstname', text)} />
-
-                <Text style={styles.text}>Apellidos</Text>
-                <TextInput style={styles.input} onChangeText={text => handleChange('lastName', text)} />
-
-                <View style={styles.contactForm}>
-                    <View>
-                        <Text style={styles.text}>Telefono</Text>
-                        <View style={{ ...styles.input, width: 145, flexDirection: 'row', alignItems: 'center' }}>
-                            <Image source={require('../../../assets/img/smartphone.png')} />
-                            <TextInput onChangeText={text => handleChange('cellPhone', text)} textContentType={'telephoneNumber'} />
+        <View style={styles.screen}>
+            <View style={styles.container} >
+                <View>
+                    <Text style={styles.titleStyle}>{"Confirma tus datos \nantes de continuar"}</Text>
+                </View>
+                <View>
+                    <Text>Nombres</Text>
+                    <TextInput
+                        onChangeText={(text) => {
+                            handlerChange("firstname", text)
+                        }} />
+                    <Text>Apellidos</Text>
+                    <TextInput
+                        onChangeText={(text) => {
+                            handlerChange("lastname", text)
+                        }} keyboardType={'number-pad'} />
+                    <View >
+                        <View>
+                            <Text>Telefono</Text>
+                            <TextInput />
                         </View>
                     </View>
                     <View>
