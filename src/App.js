@@ -9,11 +9,14 @@ import SplashScreen from './views/Screens/SplashScreen';
 
 export default function App() {
   const [isSetup, setisSetup] = useState(false)
+   useEffect(() => {
+    console.log(isSetup);
+   }, [isSetup]);
 
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
-        <StatusBar backgroundColor="#161616" />
+        <StatusBar backgroundColor="#282828" />
         {isSetup ? <AppNavigator /> : <SplashScreen setisSetup={setisSetup} />}
       </PersistGate>
     </Provider>

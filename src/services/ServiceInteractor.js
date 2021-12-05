@@ -155,3 +155,107 @@ export async function getUserData({
         }
     });
 }
+
+export async function enableOrderByName() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: URLS.MERCHANT_SERVICE_BY_NAME,
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function merchantCategory() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: URLS.MERCHANT_CATEGORY,
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function advertising() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: URLS.ADVERTISING,
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function event() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: URLS.EVENT,
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function departaments() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: URLS.DEPARTAMENTS,
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function departaments() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: "http://localhost:8098/merchantFilter/category?cityId=1&merchantCategoryId=1&page=1&size=1",
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function departaments() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: "http://localhost:8098/merchantFilter/category/services?cityId=1&merchantCategoryId=1&page=1&serviceIds=1&serviceIds=2&size=1",
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
+export async function departaments() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(await CONSUME({
+                url: "http://localhost:8098/merchantFilter/category/services/coordinates?cityId=1&lat=1&lon=1&merchantCategoryId=1&page=1&serviceIds=1&serviceIds=2&size=1",
+                method: "GET",
+            }))
+        } catch (error) {
+            reject(error)
+        }
+    });
+}

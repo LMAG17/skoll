@@ -16,8 +16,9 @@ export default function SplashScreen(props) {
 
             }
             else {
-                console.log("nlfwknlfwklwenfk");
                 setisSetup(true)
+                console.log("nlfwknlfwklwenfk");
+                
             }
         }, 500);
     }, [progress])

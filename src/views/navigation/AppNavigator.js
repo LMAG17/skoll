@@ -10,7 +10,7 @@ export default AppNAvigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         headerMode="none"
-        initialRouteName="Login"
+        initialRouteName="Testscreen"
       >
         {
           StackNavigator.map(navigator => (

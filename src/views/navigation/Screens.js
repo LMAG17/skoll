@@ -5,8 +5,8 @@ import HomeScreen from '../Screens/HomeScreen';
 import SplashScreen from '../Screens/SplashScreen';
 import FormRegister from '../Screens/FormRegister'
 import HomeTabs from './HomeTabs'
-import LoginFacebook from '../Screens/LoginFacebook'
 import Main from '../Screens/Main';
+import Testscreen from '../Screens/Testscreen';
 
 export default [
     {
@@ -26,10 +26,6 @@ export default [
         component: FormRegister
     },
     {
-        path: "LoginFacebook",
-        component: LoginFacebook
-    },
-    {
         path: "ValidateOtpEmail",
         component: ScreenOtpEmail
     },
@@ -45,5 +41,8 @@ export default [
         path: "HomeScreen",
         component: HomeScreen
     },
-
+    {
+        path: "Testscreen",
+        component: Testscreen
+    },
 ]

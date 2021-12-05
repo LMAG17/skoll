@@ -33,6 +33,8 @@
 		1A43081E9B444A7AB3682C58 /* BarlowCondensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 022B84072C5747DDB08BB1AB /* BarlowCondensed-Thin.ttf */; };
 		2DFA12152A8741408B1DCA8E /* BarlowCondensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2E48FE11CC346D49B5562FD /* BarlowCondensed-ThinItalic.ttf */; };
 		0785B54A144E464AA4629848 /* BarlowCondensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 72FB9DFE78784CF399D6AD1C /* BarlowCondensed.ttf */; };
+		6FDB672F872C4216A0D0F1D3 /* Average-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF0F69E52E8246CFBB8AB5AB /* Average-Regular.ttf */; };
+		DDDCC4B8A7E94DEAB41A90DA /* Alegreya-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 02CC63835823489BBF865A45 /* Alegreya-VariableFont_wght.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,8 @@
 		022B84072C5747DDB08BB1AB /* BarlowCondensed-Thin.ttf */ = {isa = PBXFileReference; name = "BarlowCondensed-Thin.ttf"; path = "../src/assets/fonts/Barlow_Condensed/BarlowCondensed-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		F2E48FE11CC346D49B5562FD /* BarlowCondensed-ThinItalic.ttf */ = {isa = PBXFileReference; name = "BarlowCondensed-ThinItalic.ttf"; path = "../src/assets/fonts/Barlow_Condensed/BarlowCondensed-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		72FB9DFE78784CF399D6AD1C /* BarlowCondensed.ttf */ = {isa = PBXFileReference; name = "BarlowCondensed.ttf"; path = "../src/assets/fonts/BarlowCondensed.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BF0F69E52E8246CFBB8AB5AB /* Average-Regular.ttf */ = {isa = PBXFileReference; name = "Average-Regular.ttf"; path = "../src/assets/fonts/Average-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		02CC63835823489BBF865A45 /* Alegreya-VariableFont_wght.ttf */ = {isa = PBXFileReference; name = "Alegreya-VariableFont_wght.ttf"; path = "../src/assets/fonts/Alegreya-VariableFont_wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +214,8 @@
 				022B84072C5747DDB08BB1AB /* BarlowCondensed-Thin.ttf */,
 				F2E48FE11CC346D49B5562FD /* BarlowCondensed-ThinItalic.ttf */,
 				72FB9DFE78784CF399D6AD1C /* BarlowCondensed.ttf */,
+				BF0F69E52E8246CFBB8AB5AB /* Average-Regular.ttf */,
+				02CC63835823489BBF865A45 /* Alegreya-VariableFont_wght.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -330,6 +336,8 @@
 				1A43081E9B444A7AB3682C58 /* BarlowCondensed-Thin.ttf in Resources */,
 				2DFA12152A8741408B1DCA8E /* BarlowCondensed-ThinItalic.ttf in Resources */,
 				0785B54A144E464AA4629848 /* BarlowCondensed.ttf in Resources */,
+				6FDB672F872C4216A0D0F1D3 /* Average-Regular.ttf in Resources */,
+				DDDCC4B8A7E94DEAB41A90DA /* Alegreya-VariableFont_wght.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

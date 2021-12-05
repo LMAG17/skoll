@@ -75,28 +75,15 @@ const buttons = [
         imageStyle: {
             ...imageStyle,
         }
-    },
-    {
-        title: "Continúa con tu celular",
-        icon: phone,
-        buttonRowStyle: {
-            ...buttonRowStyle
-        },
-        style: {
-            ...buttonStyle,
-            backgroundColor: "#EC6222",
-        },
-        textStyle: {
-            ...textStyle,
-            color: '#FFFFFF'
-        },
-        imageStyle: {
-            ...imageStyle,
-        }
-    },
+    }
 ]
 
+
+
+
 export default function LoginScreen() {
+    const [data, setData] = useState({});
+    const [loginPhone, setLoginPhone] = useState(false);
     const dispatch = useDispatch();
 
 
@@ -112,69 +99,99 @@ export default function LoginScreen() {
     }
 
     return (
-        <View style={styles.screen}>
-            <View style={styles.container} >
-                <Image
-                    style={styles.image}
-                    source={require("../../../assets/img/login.png")}
-                />
-                <Text style={styles.text}>SKOLL</Text>
-                <Text style={styles.helpText}>Accede rapidamente a tus compras</Text>
-                <View style={styles.categories}>
-                    {
-                        [1, 2, 3].map(i =>
-                            <LinearGradient
-                                colors={["#E49414", "#E9A83C"]}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 0, y: 1 }}
-                                style={styles.icon}>
-                                <Text>{i}</Text>
-                            </LinearGradient>
-                        )
-                    }
-                </View>
-                <View>
-                    {
-                        buttons.map(button =>
-                            <TouchableOpacity style={button.style} key={button.title} onPress={() => {
-                                dispatch(setConsumeService(
-                                    {
-                                        url: 'http://54.241.45.111:8090/user/register',
-                                        method: 'POST',
-                                        body: {
-                                            "firstname": "juam",
-                                            "lastName": "alvare",
-                                            "email": "juam.valim@gmail.com",
-                                            "cellPhone": "3000000000",
-                                            "city": "Villavicencio"
-                                        },
-                                    }
-                                ))
-                            }}>
-                                <View style={button.buttonRowStyle}>
-                                    <Image
-                                        style={button.imageStyle}
-                                        source={button.icon}
-                                    />
-                                    <Text style={button.textStyle}>{button.title}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )
+        <ScrollView>
+            <View style={styles.screen}>
+                <View style={styles.container} >
+                    <Image
+                        style={styles.image}
+                        source={require("../../../assets/img/login.png")}
+                    />
+                    <Text style={styles.text}>SKOLL</Text>
+                    <Text style={styles.helpText}>Accede rapidamente a tus compras</Text>
+                    <View style={styles.categories}>
+                        {
+                            [1, 2, 3].map(i =>
+                                <LinearGradient
+                                    colors={["#E49414", "#E9A83C"]}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 0, y: 1 }}
+                                    style={styles.icon}>
+                                    <Text>{i}</Text>
+                                </LinearGradient>
+                            )
+                        }
+                    </View>
+                    <View>
+                        {
+                            buttons.map(button =>
+                                <TouchableOpacity style={button.style} key={button.title} onPress={() => {
+
+                                }}>
+                                    <View style={button.buttonRowStyle}>
+                                        <Image
+                                            style={button.imageStyle}
+                                            source={button.icon}
+                                        />
+                                        <Text style={button.textStyle}>{button.title}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }
+                    </View>
+                    <TouchableOpacity
+                        style={{ ...buttonStyle, backgroundColor: "#EC6222", }}
+                        onPress={() => { setLoginPhone(!loginPhone) }}
+                    >
+                        <View style={{ ...buttonRowStyle }}>
+                            <Image
+                                style={{
+                                    ...imageStyle,
+                                }}
+                                source={phone}
+                            />
+                            <Text style={{ ...textStyle, color: '#FFFFFF' }}>Continúa con tu celular</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {loginPhone ?
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ ...styles.label, }}>Telefono</Text>
+                            <View style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#fff', width: '80%', height: 40, borderRadius: 18, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image source={require('../../../assets/img/smartphone.png')} style={{ marginLeft: 30 }} />
+                                <TextInput style={{ width: '100%' }} onChangeText={text => handleChange('username', text)} textContentType={'telephoneNumber'} />
+                            </View>
+                            <Text style={styles.label}>Contraseña</Text>
+                            <View style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#fff', width: '80%', height: 40, borderRadius: 18, justifyContent: 'center', alignItems: 'center' }}>
+                                <TextInput style={{ width: '100%' }} onChangeText={text => handleChange('password', text)} secureTextEntry={true} />
+                            </View>
+
+
+
+                            <View style={{ marginTop: 50 }}>
+                                <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
+                                    <Text style={styles.label}>Continuar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        : null
                     }
                     <View style={styles.forgotPasswordContainer}>
-                <Text style={styles.forgotPasswordAsk}>
-                    ¿Olvidaste tu contraseña?
-                </Text>
-                <Text style={styles.forgotPasswordLink}>
-                    Recuperala aqui !
-                </Text>
-            </View>
-        </View>
+                        <Text style={styles.forgotPasswordAsk}>
+                            ¿Olvidaste tu contraseña?
+                        </Text>
+                        <Text style={styles.forgotPasswordLink}>
+                            Recuperala aqui !
+                        </Text>
+                    </View>
+                </View>
             </View >
-        </View >
-    )
+        </ScrollView >
+    );
 }
 const styles = StyleSheet.create({
+    label: {
+        fontFamily: 'Alegreya-VariableFont_wght',
+        fontSize: 18
+    },
     container: {
         width: ScreenWidth,
         flex: 1,
@@ -248,5 +265,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 15,
         color: '#C27406'
+    }, btn: {
+        backgroundColor: '#E8A537',
+        width: 250,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
     }
 });
