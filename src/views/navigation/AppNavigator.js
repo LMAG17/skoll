@@ -103,21 +103,14 @@ export default AppNAvigator = () => {
           options={{ gestureEnabled: false }}
           component={LoginScreen}
         />
-        <Stack.Screen
-          name="Register"
-          options={{ gestureEnabled: false }}
-          component={Register}
-        />
+      
+        
         <Stack.Screen
           name="FormRegister"
           options={{ gestureEnabled: false }}
           component={FormRegister}
         />
-        <Stack.Screen
-          name="LoginFacebook"
-          options={{ gestureEnabled: false }}
-          component={LoginFacebook}
-        />
+        
         <Stack.Screen
           name="ValidateOtpEmail"
           options={{ gestureEnabled: false }}
@@ -130,11 +123,7 @@ export default AppNAvigator = () => {
         >
           {props => activeHU.isOnboardingEnable ? < MainTabs {...props} /> : loginScreen(props)}
         </Stack.Screen> */}
-        <Stack.Screen
-          name="HomeTabs"
-          options={{ gestureEnabled: false }}
-          component={HomeTabs}
-        />
+      
         <Stack.Screen
           name="SplashScreen"
           options={{ gestureEnabled: false }}

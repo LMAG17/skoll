@@ -149,9 +149,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
 
     },
-    screen: {
+    screen:{
         flex: 1,
-        backgroundColor: "#282828",
+        backgroundColor: '#282828',
         alignItems: 'center',
         justifyContent: 'space-around'
     }
