@@ -9,6 +9,7 @@ import SplashScreen from '../Screens/SplashScreen';
 import FormRegister from '../Screens/FormRegister'
 import HomeTabs from './HomeTabs'
 import LoginFacebook from '../Screens/LoginFacebook'
+import Main from '../Screens/Main';
 
 const Stack = createStackNavigator();
 var timerCloseSessionMain;
@@ -92,15 +93,30 @@ export default AppNAvigator = () => {
   return (
     <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }} >
-        <Stack.Screen
-          name="LoginFacebook"
+      <Stack.Screen
+          name="Main"
           options={{ gestureEnabled: false }}
-          component={LoginFacebook}
+          component={Main}
+        />
+      <Stack.Screen
+          name="LoginScreen"
+          options={{ gestureEnabled: false }}
+          component={LoginScreen}
         />
         <Stack.Screen
           name="Register"
           options={{ gestureEnabled: false }}
           component={Register}
+        />
+        <Stack.Screen
+          name="FormRegister"
+          options={{ gestureEnabled: false }}
+          component={FormRegister}
+        />
+        <Stack.Screen
+          name="LoginFacebook"
+          options={{ gestureEnabled: false }}
+          component={LoginFacebook}
         />
         <Stack.Screen
           name="ValidateOtpEmail"
@@ -129,6 +145,9 @@ export default AppNAvigator = () => {
           options={{ gestureEnabled: false }}
           component={HomeScreen}
         />
+
+        
+
       </Stack.Navigator>
     </NavigationContainer>
   );

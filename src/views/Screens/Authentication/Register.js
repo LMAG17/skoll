@@ -1,59 +1,84 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useDispatch } from 'react-redux'
+import { config } from '../../../constants/config'
+import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware'
+import { generic } from '../../../utils/Services'
 
-export default function Register() {
+export default function Register(props) {
+    const dispatch= useDispatch()
     const [data, setdata] = useState({})
 
-    const handlerChange = (key, value) => {
+    const handleChange = (key, value) => {
         setdata({
             ...data,
+            "cellPhonePrefix":"+57",
             [key]: value
         })
         console.log("data", data);
     }
+     const handleGetPreRegister = async () => {
+        const url = `${config.baseUrl}${config.apiUser}register`;
+        try {
+            let getRegister = await generic(url, 'POST', data)
+            console.log("getRegister", getRegister);
+            props.navigation.navigate('ValidateOtpEmail')
+            dispatch(setSessionId(getRegister.data.sessionId))
+            
+        } catch (error) {
+            console.log("ERROR DE VISTA", error);
+        }
+    }
 
     return (
         <View style={styles.screen}>
-            <View style={styles.container} >
-                <View>
-                    <Text style={styles.titleStyle}>{"Confirma tus datos \nantes de continuar"}</Text>
+
+            <View>
+                <Text style={styles.titleStyle}>{"Confirma tus datos \nantes de continuar"}</Text>
+            </View>
+            <View style={{ width: '80%' }}>
+                <Text>Nombres</Text>
+                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
+
+                    <TextInput onChangeText={text => handleChange('firstname', text)} textContentType="emailAddress" />
                 </View>
-                <View>
-                    <Text>Nombres</Text>
-                    <TextInput
-                        onChangeText={(text) => {
-                            handlerChange("firstname", text)
-                        }} />
-                    <Text>Apellidos</Text>
-                    <TextInput
-                        onChangeText={(text) => {
-                            handlerChange("lastname", text)
-                        }} keyboardType={'number-pad'} />
-                    <View >
-                        <View>
-                            <Text>Telefono</Text>
-                            <TextInput />
+                <Text>Apellidos</Text>
+                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
+
+                    <TextInput onChangeText={text => handleChange('lastName', text)} textContentType="emailAddress" />
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                    <View style={{ width: '48%' }}>
+                        <Text style={styles.text}>Telefono</Text>
+                        <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={require('../../../assets/img/smartphone.png')} />
+                            <TextInput onChangeText={text => handleChange('cellPhone', text)} textContentType="emailAddress" />
                         </View>
                     </View>
-                    <View>
+                    <View style={{ width: '48%' }}>
                         <Text style={styles.text}>Correo</Text>
-                        <View style={{ ...styles.input, width: 145, flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={require('../../../assets/img/email.png')} />
                             <TextInput onChangeText={text => handleChange('email', text)} textContentType="emailAddress" />
                         </View>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
+            </View>
+            <View style={{width:'100%', alignItems:'center'}}>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '80%' }}>
                     <Text style={styles.text}>Estas en:</Text>
                     <Image source={require('../../../assets/img/colombia.png')} />
                 </View>
-                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center', width: '80%' }}>
                     <Image source={require('../../../assets/img/point.png')} />
                     <TextInput onChangeText={text => handleChange('city', text)} />
                 </View>
-
             </View>
+
+
             <View style={{ marginTop: 50 }}>
                 <TouchableOpacity style={styles.btn} onPress={() => {
                     handleGetPreRegister()
@@ -98,10 +123,13 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: "#fff",
         height: 40,
-        borderRadius: 10
+        borderRadius: 10,
+        marginVertical: 8
     },
     container: {
         flex: 1,
+        width: '100%',
+        height: '100%',
         backgroundColor: '#282828',
         alignItems: 'center',
         justifyContent: 'space-around'
@@ -120,5 +148,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around'
 
+    },
+    screen: {
+        flex: 1,
+        backgroundColor: "#282828",
+        alignItems: 'center',
+        justifyContent: 'space-around'
     }
 })
