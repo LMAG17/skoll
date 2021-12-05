@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import InputSelectCustom from '../../components/InputSelectCustom';
-import { config } from '../../constants/config';
-import { generic } from '../../utils/Services';
-import {setToken} from '../../middlewares/token'
+import { finishRegistration } from '../../services/ServiceInteractor';
 
 const FormRegister = (props) => {
     const genders = [
@@ -31,9 +29,8 @@ const FormRegister = (props) => {
 
     }
     const handleRegisterService = async () => {
-        const url = `${config.baseUrl}${config.apiUser}register/confirmation`;
         try {
-            let responseRegister = await generic(url, 'POST', data)
+            let responseRegister = await finishRegistration(data)
             console.log("RESPUESTA_Register", responseRegister);
             dispatch(setToken(responseRegister.data.token))
         } catch (error) {

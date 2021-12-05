@@ -1,28 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
-import { config } from '../../../constants/config'
 import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware'
-import { generic } from '../../../utils/Services'
+import { register } from '../../../services/ServiceInteractor'
 
 export default function Register(props) {
-    const user = useSelector(state => state.user);
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
-    const [data, setdata] = useState({})
-    console.log("USUARIO",user);
+    const [data, setdata] = useState({
+        "cellPhonePrefix": "+57",
+    })
+    console.log("USUARIO", user);
     const handleChange = (key, value) => {
         setdata({
             ...data,
-            "cellPhonePrefix": "+57",
             [key]: value
         })
         console.log("data", data);
     }
     const handleGetPreRegister = async () => {
-        const url = `${config.baseUrl}${config.apiUser}register`;
         try {
-            let getRegister = await generic(url, 'POST', data)
+            let getRegister = await register(data)
             console.log("getRegister", getRegister);
             props.navigation.navigate('ValidateOtpEmail')
             dispatch(setSessionId(getRegister.data.sessionId))
@@ -32,6 +31,16 @@ export default function Register(props) {
         }
     }
 
+    useEffect(() => {
+        if (user) {
+            setdata({
+                ...data,
+                firstname: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+            })
+        }
+    }, [user])
     return (
         <View style={styles.screen}>
 
@@ -41,13 +50,22 @@ export default function Register(props) {
             <View style={{ width: '80%' }}>
                 <Text>Nombres</Text>
                 <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
-
-                    <TextInput onChangeText={text => handleChange('firstname', text)} textContentType="emailAddress" value={user.firstName} />
+                    <TextInput
+                        onChangeText={text =>
+                            handleChange('firstname', text)
+                        }
+                        textContentType="emailAddress"
+                        value={data.firstname} />
                 </View>
                 <Text>Apellidos</Text>
                 <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
 
-                    <TextInput onChangeText={text => handleChange('lastName', text)} textContentType="emailAddress" value={user.lastName} />
+                    <TextInput
+                        onChangeText={text =>
+                            handleChange('lastName', text)
+                        }
+                        textContentType="emailAddress"
+                        value={data.lastName} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
@@ -55,14 +73,24 @@ export default function Register(props) {
                         <Text style={styles.text}>Telefono</Text>
                         <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={require('../../../assets/img/smartphone.png')} />
-                            <TextInput onChangeText={text => handleChange('cellPhone', text)} textContentType="emailAddress" />
+                            <TextInput
+                                onChangeText={text =>
+                                    handleChange('cellPhone', text)
+                                }
+                                textContentType="emailAddress"
+                            />
                         </View>
                     </View>
                     <View style={{ width: '48%' }}>
                         <Text style={styles.text}>Correo</Text>
                         <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={require('../../../assets/img/email.png')} />
-                            <TextInput onChangeText={text => handleChange('email', text)} textContentType="emailAddress" value={user.email} />
+                            <TextInput
+                                onChangeText={text =>
+                                    handleChange('email', text)
+                                }
+                                textContentType="emailAddress"
+                                value={data.email} />
                         </View>
                     </View>
                 </View>
@@ -75,7 +103,11 @@ export default function Register(props) {
                 </View>
                 <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center', width: '80%' }}>
                     <Image source={require('../../../assets/img/point.png')} />
-                    <TextInput onChangeText={text => handleChange('city', text)} />
+                    <TextInput
+                        onChangeText={text =>
+                            handleChange('city', text)
+                        }
+                    />
                 </View>
             </View>
 

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import { useDispatch, useSelector } from 'react-redux';
-import { config } from '../../../constants/config';
+import { useDispatch } from 'react-redux';
+import { facebookLogin, login } from '../../../services/ServiceInteractor';
 import { onFacebookButtonPress } from '../../../firebase/auth';
-import { generic } from '../../../utils/Services';
-import { setUser } from '../../../middlewares/user/userMiddleware'
-
+import { setUser } from '../../../middlewares/user/userMiddleware';
 
 const apple = require('../../../assets/icon/apple.png');
 const facebook = require('../../../assets/icon/facebook.png');
@@ -71,8 +69,6 @@ export default function LoginScreen(props) {
     const [data, setData] = useState({});
     const [loginPhone, setLoginPhone] = useState(false);
     const dispatch = useDispatch();
-    useSelector
-
 
     const handleChange = (key, text) => {
         setData({
@@ -81,9 +77,8 @@ export default function LoginScreen(props) {
         })
     }
     const handlerGetFacebook = async (data) => {
-        const url = `${config.baseUrl}external/auth/facebook`;
         try {
-            let getFacebook = await generic(url, 'POST', data)
+            let getFacebook = await facebookLogin(data)
             console.log("getFacebook", getFacebook);
         } catch (error) {
             console.log("ERROR DE VISTA", error);
@@ -105,21 +100,11 @@ export default function LoginScreen(props) {
                 uuid: res.sign.user.uid
             })
         })
-
     }
-
-
     const handleLogin = async () => {
-        const url = `${config.baseUrl}oauth/login`;
-        try {
-            let responseLogin = await generic(url, 'POST', data)
-            console.log("RESPUESTA_LOGIN", responseLogin);
-            /*dispatch(setToken()) */
-            props.navigation.navigate('HomeScreen')
-        } catch (error) {
-            console.log("ERROR DE VISTA", error);
-        }
+        login(data)
     }
+
     return (
         <ScrollView>
             <View style={styles.screen}>
@@ -213,20 +198,20 @@ export default function LoginScreen(props) {
                     <View style={styles.forgotPasswordContainer}>
                         <Text style={styles.forgotPasswordAsk}>
                             ¿Olvidaste tu contraseña?
-                    </Text>
+                        </Text>
                         <Text style={styles.forgotPasswordLink}>
                             Recuperala aqui !
-                    </Text>
+                        </Text>
                     </View>
                     <TouchableOpacity onPress={() => { props.navigation.navigate('Register') }} >
                         <Text style={styles.forgotPasswordLink}>
                             Registrarse
-                    </Text>
+                        </Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-        </ScrollView>
-    )
+            </View >
+        </ScrollView >
+    );
 }
 const styles = StyleSheet.create({
     label: {

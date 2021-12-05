@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
-import { config } from '../../constants/config';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { onFacebookButtonPress } from '../../firebase/auth';
-import { generic } from '../../utils/Services';
+import { facebookLogin } from '../../services/ServiceInteractor';
 
 
 
@@ -10,9 +9,8 @@ const Main = () => {
     const [displayName, setDisplayName] = useState()
 
     const handlerGetFacebook = async (data) => {
-        const url = `${config.baseUrl}external/auth/facebook`;
         try {
-            let getFacebook = await generic(url, 'POST', data)
+            let getFacebook = await facebookLogin(data)
             console.log("getFacebook", getFacebook);
         } catch (error) {
             console.log("ERROR DE VISTA", error);
@@ -22,9 +20,9 @@ const Main = () => {
         // console.log("entro hasta aqui");
         onFacebookButtonPress().then((res) => {
             handlerGetFacebook({
-                tokenFacebook:res.data.accessToken,
-                expiredToken:res.data.expirationTime,
-                uuid:res.sign.user.uid
+                tokenFacebook: res.data.accessToken,
+                expiredToken: res.data.expirationTime,
+                uuid: res.sign.user.uid
             })
         })
 

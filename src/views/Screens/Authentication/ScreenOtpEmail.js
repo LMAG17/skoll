@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { config } from '../../../constants/config';
-import { generic } from '../../../utils/Services';
+import { generateOtp, validateOtp as validateOtpService } from '../../../services/ServiceInteractor';
 
 const ScreenOtpEmail = (props) => {
     const [data, setData] = useState({});
@@ -15,20 +14,18 @@ const ScreenOtpEmail = (props) => {
 
 
     const handleGenerateOtp = async () => {
-        console.log("FUncion de la vista",sessionId);
-        const url = `${config.baseUrl}${config.apiSecurity}generate/otp-register`;
-        const body={"sessionId":sessionId}
+        console.log("FUncion de la vista", sessionId);
+        const body = { "sessionId": sessionId }
         try {
-            let responseGenerateOtp = await generic(url, 'POST', body)
+            let responseGenerateOtp = await generateOtp("GENERATE_OTP_REGISTRY", body);
             console.log("RESPUESTA_Otp", responseGenerateOtp);
         } catch (error) {
             console.log("ERROR DE VISTA", error);
         }
     }
     const handleValidateOtp = async () => {
-        const url =  `${config.baseUrl}${config.apiSecurity}validate/otp-register`;
         try {
-            let responseValidateOtp = await generic(url, 'POST', data)
+            let responseValidateOtp = await validateOtpService("VALIDATE_OTP_REGISTRY", data)
             console.log("RESPUESTA_ValidateOtp", responseValidateOtp);
             props.navigation.navigate('FormRegister')
         } catch (error) {

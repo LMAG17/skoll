@@ -14,7 +14,7 @@ const HomeScreen = (props) => {
         <ScrollView style={{ backgroundColor: '#161616', flex: 1 }}>
             <View style={styles.loginContainer}>
                 <View style={styles.icon} />
-                <TouchableOpacity onPress={()=>{props.navigation.navigate('LoginScreen')}} >
+                <TouchableOpacity onPress={()=>{props.navigation.navigate('Login')}} >
                 <Text style={styles.loginText}>Iniciar Sesion</Text>
                 </TouchableOpacity>
                 <View style={styles.icon} />
