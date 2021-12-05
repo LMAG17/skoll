@@ -221,7 +221,7 @@ export async function departaments() {
     });
 }
 
-export async function departaments() {
+export async function departaments2() {
     return new Promise(async (resolve, reject) => {
         try {
             resolve(await CONSUME({
@@ -234,7 +234,7 @@ export async function departaments() {
     });
 }
 
-export async function departaments() {
+export async function departaments3() {
     return new Promise(async (resolve, reject) => {
         try {
             resolve(await CONSUME({
@@ -247,7 +247,7 @@ export async function departaments() {
     });
 }
 
-export async function departaments() {
+export async function departaments4() {
     return new Promise(async (resolve, reject) => {
         try {
             resolve(await CONSUME({
