@@ -94,6 +94,16 @@ export default AppNAvigator = () => {
     <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }} >
       <Stack.Screen
+          name="HomeScreen"
+          options={{ gestureEnabled: false }}
+          component={HomeScreen}
+        />
+      <Stack.Screen
+          name="Register"
+          options={{ gestureEnabled: false }}
+          component={Register}
+        />
+      <Stack.Screen
           name="Main"
           options={{ gestureEnabled: false }}
           component={Main}
@@ -129,14 +139,6 @@ export default AppNAvigator = () => {
           options={{ gestureEnabled: false }}
           component={SplashScreen}
         />
-        <Stack.Screen
-          name="HomeScreen"
-          options={{ gestureEnabled: false }}
-          component={HomeScreen}
-        />
-
-        
-
       </Stack.Navigator>
     </NavigationContainer>
   );

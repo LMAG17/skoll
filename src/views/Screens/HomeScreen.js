@@ -6,15 +6,17 @@ import {
     View,
     TextInput
 } from 'react-native'
-import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
+import { ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
     const promos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17, 18, 19, 20]
     return (
         <ScrollView style={{ backgroundColor: '#161616', flex: 1 }}>
             <View style={styles.loginContainer}>
                 <View style={styles.icon} />
+                <TouchableOpacity onPress={()=>{props.navigation.navigate('LoginScreen')}} >
                 <Text style={styles.loginText}>Iniciar Sesion</Text>
+                </TouchableOpacity>
                 <View style={styles.icon} />
                 <View style={styles.icon} />
                 <View style={styles.icon} />

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { config } from '../../../constants/config';
+import { onFacebookButtonPress } from '../../../firebase/auth';
 import { generic } from '../../../utils/Services';
+import { setUser } from '../../../middlewares/user/userMiddleware'
 
 
 const apple = require('../../../assets/icon/apple.png');
@@ -59,34 +61,17 @@ const buttons = [
         imageStyle: {
             ...imageStyle,
         }
-    },
-    {
-        title: "Continúa con facebook",
-        icon: facebook,
-        buttonRowStyle: {
-            ...buttonRowStyle
-        },
-        style: {
-            ...buttonStyle,
-            backgroundColor: "#3B5998",
-        },
-        textStyle: {
-            ...textStyle,
-            color: '#FFFFFF'
-        },
-        imageStyle: {
-            ...imageStyle,
-        }
     }
 ]
 
 
 
 
-export default function LoginScreen() {
+export default function LoginScreen(props) {
     const [data, setData] = useState({});
     const [loginPhone, setLoginPhone] = useState(false);
     const dispatch = useDispatch();
+    useSelector
 
 
     const handleChange = (key, text) => {
@@ -95,10 +80,36 @@ export default function LoginScreen() {
             [key]: text
         })
     }
+    const handlerGetFacebook = async (data) => {
+        const url = `${config.baseUrl}external/auth/facebook`;
+        try {
+            let getFacebook = await generic(url, 'POST', data)
+            console.log("getFacebook", getFacebook);
+        } catch (error) {
+            console.log("ERROR DE VISTA", error);
+            props.navigation.navigate('Register')
+        }
+    }
+    const handleLoginFacebook = async () => {
+        // console.log("entro hasta aqui");
+        onFacebookButtonPress().then((res) => {
+            const users = {
+                firstName: res.sign.additionalUserInfo.profile.first_name,
+                lastName: res.sign.additionalUserInfo.profile.last_name,
+                email: res.sign.additionalUserInfo.profile.email
+            }
+            dispatch(setUser(users))
+            handlerGetFacebook({
+                tokenFacebook: res.data.accessToken,
+                expiredToken: res.data.expirationTime,
+                uuid: res.sign.user.uid
+            })
+        })
+
+    }
 
 
-
-    const handleLogin =async () => {
+    const handleLogin = async () => {
         const url = `${config.baseUrl}oauth/login`;
         try {
             let responseLogin = await generic(url, 'POST', data)
@@ -150,6 +161,20 @@ export default function LoginScreen() {
                         }
                     </View>
                     <TouchableOpacity
+                        style={{ ...buttonStyle, backgroundColor: "#3B5998" }}
+                        onPress={() => { handleLoginFacebook() }}
+                    >
+                        <View style={{ ...buttonRowStyle }}>
+                            <Image
+                                style={{
+                                    ...imageStyle,
+                                }}
+                                source={facebook}
+                            />
+                            <Text style={{ ...textStyle, color: '#FFFFFF' }}>Continúa con facebook</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         style={{ ...buttonStyle, backgroundColor: "#EC6222", }}
                         onPress={() => { setLoginPhone(!loginPhone) }}
                     >
@@ -193,6 +218,11 @@ export default function LoginScreen() {
                             Recuperala aqui !
                     </Text>
                     </View>
+                    <TouchableOpacity onPress={() => { props.navigation.navigate('Register') }} >
+                        <Text style={styles.forgotPasswordLink}>
+                            Registrarse
+                    </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>

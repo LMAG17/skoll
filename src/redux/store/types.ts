@@ -1,3 +1,8 @@
+export interface User{
+    firstName:string,
+    lastName:string,
+    email:string,
+}
 export interface AppState {
     title: String;
     isNetwork: boolean;
@@ -8,6 +13,7 @@ export interface AppState {
     register:any;
     sessionId:String;
     token:string;
+    user:User;
 }
 
 export const initialState: AppState = {
@@ -19,5 +25,10 @@ export const initialState: AppState = {
     validateOtp:{},
     register:{},
     sessionId:"",
-    token:""
+    token:"",
+    user:{
+        firstName:"",
+        lastName:"",
+        email:"", 
+    }
 };

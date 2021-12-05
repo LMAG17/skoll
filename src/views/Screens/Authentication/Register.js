@@ -1,31 +1,32 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { config } from '../../../constants/config'
 import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware'
 import { generic } from '../../../utils/Services'
 
 export default function Register(props) {
-    const dispatch= useDispatch()
+    const user = useSelector(state => state.user);
+    const dispatch = useDispatch()
     const [data, setdata] = useState({})
-
+    console.log("USUARIO",user);
     const handleChange = (key, value) => {
         setdata({
             ...data,
-            "cellPhonePrefix":"+57",
+            "cellPhonePrefix": "+57",
             [key]: value
         })
         console.log("data", data);
     }
-     const handleGetPreRegister = async () => {
+    const handleGetPreRegister = async () => {
         const url = `${config.baseUrl}${config.apiUser}register`;
         try {
             let getRegister = await generic(url, 'POST', data)
             console.log("getRegister", getRegister);
             props.navigation.navigate('ValidateOtpEmail')
             dispatch(setSessionId(getRegister.data.sessionId))
-            
+
         } catch (error) {
             console.log("ERROR DE VISTA", error);
         }
@@ -41,12 +42,12 @@ export default function Register(props) {
                 <Text>Nombres</Text>
                 <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
 
-                    <TextInput onChangeText={text => handleChange('firstname', text)} textContentType="emailAddress" />
+                    <TextInput onChangeText={text => handleChange('firstname', text)} textContentType="emailAddress" value={user.firstName} />
                 </View>
                 <Text>Apellidos</Text>
                 <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
 
-                    <TextInput onChangeText={text => handleChange('lastName', text)} textContentType="emailAddress" />
+                    <TextInput onChangeText={text => handleChange('lastName', text)} textContentType="emailAddress" value={user.lastName} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
@@ -61,12 +62,12 @@ export default function Register(props) {
                         <Text style={styles.text}>Correo</Text>
                         <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={require('../../../assets/img/email.png')} />
-                            <TextInput onChangeText={text => handleChange('email', text)} textContentType="emailAddress" />
+                            <TextInput onChangeText={text => handleChange('email', text)} textContentType="emailAddress" value={user.email} />
                         </View>
                     </View>
                 </View>
             </View>
-            <View style={{width:'100%', alignItems:'center'}}>
+            <View style={{ width: '100%', alignItems: 'center' }}>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '80%' }}>
                     <Text style={styles.text}>Estas en:</Text>
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
 
     },
-    screen:{
+    screen: {
         flex: 1,
         backgroundColor: '#282828',
         alignItems: 'center',
