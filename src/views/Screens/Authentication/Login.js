@@ -1,9 +1,10 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import { setConsumeService } from '../../../middlewares/consumeService/consumeServiceMiddleware';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../services/ServiceInteractor';
+
 const apple = require('../../../assets/icon/apple.png');
 const facebook = require('../../../assets/icon/facebook.png');
 const phone = require('../../../assets/icon/phone.png');
@@ -97,8 +98,19 @@ const buttons = [
 
 export default function LoginScreen() {
     const dispatch = useDispatch();
-    const serviceResponse = useSelector(state => state.serviceResponse);
-    console.log("serviceResponse", serviceResponse);
+
+
+    const handleChange = (key, text) => {
+        setData({
+            ...data,
+            [key]: text
+        })
+    }
+
+    const handleLogin = async () => {
+        login()
+    }
+
     return (
         <View style={styles.screen}>
             <View style={styles.container} >
@@ -149,17 +161,17 @@ export default function LoginScreen() {
                             </TouchableOpacity>
                         )
                     }
-                </View>
-                <View style={styles.forgotPasswordContainer}>
-                    <Text style={styles.forgotPasswordAsk}>
-                        ¿Olvidaste tu contraseña?
-                    </Text>
-                    <Text style={styles.forgotPasswordLink}>
-                        Recuperala aqui !
-                    </Text>
-                </View>
+                    <View style={styles.forgotPasswordContainer}>
+                <Text style={styles.forgotPasswordAsk}>
+                    ¿Olvidaste tu contraseña?
+                </Text>
+                <Text style={styles.forgotPasswordLink}>
+                    Recuperala aqui !
+                </Text>
             </View>
         </View>
+            </View >
+        </View >
     )
 }
 const styles = StyleSheet.create({

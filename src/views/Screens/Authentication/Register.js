@@ -1,8 +1,34 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useDispatch } from 'react-redux'
+import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware'
+import { register } from '../../../services/ServiceInteractor'
 
-export default function Register() {
+export default function Register(props) {
+    const dispatch = useDispatch()
+    const [data, setdata] = useState({})
+
+    const handleChange = (key, value) => {
+        setdata({
+            ...data,
+            "cellPhonePrefix": "+57",
+            [key]: value
+        })
+        console.log("data", data);
+    }
+    const handleGetPreRegister = async () => {
+        try {
+            let getRegister = await register(data)
+            console.log("getRegister", getRegister);
+            props.navigation.navigate('ValidateOtpEmail')
+            dispatch(setSessionId(getRegister.data.sessionId))
+
+        } catch (error) {
+            console.log("ERROR DE VISTA", error);
+        }
+    }
+
     return (
         <View style={styles.screen}>
             <View style={styles.container} >
