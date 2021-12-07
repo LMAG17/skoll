@@ -1,25 +1,37 @@
-import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import InputCustom from '../../../components/InputCustom'
 import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware'
-import { register } from '../../../services/ServiceInteractor'
+import { register as registerService } from '../../../services/ServiceInteractor'
+import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize'
 
 export default function Register(props) {
+
     const dispatch = useDispatch()
-    const [data, setdata] = useState({})
+
+    const { user, parameters } = useSelector(state => state)
+
+    const [step, setStep] = useState(0)
+
+    const { register, appTheme } = parameters
+
+    const [data, setdata] = useState({
+        "cellPhonePrefix": "+57",
+    })
 
     const handleChange = (key, value) => {
         setdata({
             ...data,
-            "cellPhonePrefix": "+57",
             [key]: value
         })
         console.log("data", data);
     }
+
     const handleGetPreRegister = async () => {
         try {
-            let getRegister = await register(data)
+            let getRegister = await registerService(data)
             console.log("getRegister", getRegister);
             props.navigation.navigate('ValidateOtpEmail')
             dispatch(setSessionId(getRegister.data.sessionId))
@@ -29,55 +41,104 @@ export default function Register(props) {
         }
     }
 
+    useEffect(() => {
+        if (user) {
+            setdata({
+                ...data,
+                firstname: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+            })
+        }
+    }, [user])
+
     return (
         <View style={styles.screen}>
-
-            <View>
-                <Text style={styles.titleStyle}>{"Confirma tus datos \nantes de continuar"}</Text>
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleStyle}>{register.title}</Text>
             </View>
-            <View style={{ width: '80%' }}>
-                <Text>Nombres</Text>
-                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
 
-                    <TextInput onChangeText={text => handleChange('firstname', text)} textContentType="emailAddress" />
-                </View>
-                <Text>Apellidos</Text>
-                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
-
-                    <TextInput onChangeText={text => handleChange('lastName', text)} textContentType="emailAddress" />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
-                    <View style={{ width: '48%' }}>
-                        <Text style={styles.text}>Telefono</Text>
-                        <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
-                            <Image source={require('../../../assets/img/smartphone.png')} />
-                            <TextInput onChangeText={text => handleChange('cellPhone', text)} textContentType="emailAddress" />
+            {
+                step === 0 &&
+                <View style={styles.form}>
+                    <Text style={styles.label}>{register.firstNameField}</Text>
+                    <InputCustom
+                        style={styles.input}
+                        onChangeText={text =>
+                            handleChange('firstname', text)
+                        }
+                        value={data.firstname}
+                    />
+                    <Text style={styles.label}>{register.lastNameField}</Text>
+                    <InputCustom
+                        style={styles.input}
+                        onChangeText={text =>
+                            handleChange('lastName', text)
+                        }
+                        value={data.lastName} />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{ width: '48%' }}>
+                            <Text style={styles.label}>{register.phoneField}</Text>
+                            <InputCustom
+                                style={styles.input}
+                                source={require('../../../assets/img/smartphone.png')}
+                                onChangeText={text =>
+                                    handleChange('cellPhone', text)
+                                }
+                                textContentType="emailAddress"
+                            />
+                        </View>
+                        <View style={{ width: '48%', overflow: 'hidden' }}>
+                            <Text style={styles.label}>{register.emailField}</Text>
+                            <InputCustom
+                                style={styles.input}
+                                onChangeText={text =>
+                                    handleChange('email', text)
+                                }
+                                textContentType="emailAddress"
+                                value={data.email}
+                                source={require('../../../assets/img/email.png')}
+                                iconStyles={{ height: HeightDP(16), width: WidthDP(20) }}
+                            />
                         </View>
                     </View>
-                    <View style={{ width: '48%' }}>
-                        <Text style={styles.text}>Correo</Text>
-                        <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center' }}>
-                            <Image source={require('../../../assets/img/email.png')} />
-                            <TextInput onChangeText={text => handleChange('email', text)} textContentType="emailAddress" />
-                        </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <Text style={[styles.label, { marginRight: WidthDP(8) }]}>{register.fromField}</Text>
+                        <Image
+                            source={require('../../../assets/img/colombia.png')}
+                            style={{ height: HeightDP(20), width: WidthDP(20) }}
+                        />
                     </View>
+                    <InputCustom
+                        source={require('../../../assets/img/point.png')}
+                        iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
+                        onChangeText={text =>
+                            handleChange('city', text)
+                        }
+                    />
                 </View>
-            </View>
-            <View style={{width:'100%', alignItems:'center'}}>
-
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '80%' }}>
-                    <Text style={styles.text}>Estas en:</Text>
-                    <Image source={require('../../../assets/img/colombia.png')} />
+            }
+            {
+                step === 1 &&
+                <View style={styles.form}>
+                    <Text style={styles.label}>{register.firstNameField}</Text>
+                    <InputCustom
+                        style={styles.input}
+                        onChangeText={text =>
+                            handleChange('firstname', text)
+                        }
+                        value={data.firstname}
+                    />
+                    <Text style={styles.label}>{register.lastNameField}</Text>
+                    <InputCustom
+                        style={styles.input}
+                        onChangeText={text =>
+                            handleChange('lastName', text)
+                        }
+                        value={data.lastName} />
                 </View>
-                <View style={{ ...styles.input, flexDirection: 'row', alignItems: 'center', width: '80%' }}>
-                    <Image source={require('../../../assets/img/point.png')} />
-                    <TextInput onChangeText={text => handleChange('city', text)} />
-                </View>
-            </View>
-
-
-            <View style={{ marginTop: 50 }}>
+            }
+            <View style={{ width: '100%', alignItems: 'center' }}>
                 <TouchableOpacity style={styles.btn} onPress={() => {
                     handleGetPreRegister()
                     /* console.log(data)
@@ -87,70 +148,57 @@ export default function Register(props) {
                         body: data
                     }))
                     props.navigation.navigate('ValidateOtpEmail') */
-
                 }}>
-                    <Text style={styles.text}>Continuar</Text>
+                    <Text style={[styles.label, styles.btnText]}>{register.continueButton}</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
-    text: {
-        fontFamily: 'Alegreya-VariableFont_wght',
-        fontSize: 18
-    },
     btn: {
         backgroundColor: '#E8A537',
-        width: 250,
-        height: 50,
+        width: WidthDP(250),
+        height: HeightDP(50),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
     },
-    form: {
-        width: '80%',
-        flex: 0.5,
-        justifyContent: 'space-between'
+    btnText: {
+        fontSize: FontSizeRP(20),
     },
-    containerTitle: {
-        alignItems: 'flex-start',
-        width: '80%'
+    form: {
+        width: '100%',
+    },
+    label: {
+        fontFamily: 'Alegreya-VariableFont_wght',
+        fontSize: FontSizeRP(16),
+        fontWeight: '400',
+        lineHeight: 22,
+        marginVertical: HeightDP(4),
     },
     input: {
-        backgroundColor: "#fff",
-        height: 40,
-        borderRadius: 10,
-        marginVertical: 8
+        marginVertical: HeightDP(4)
     },
-    container: {
-        flex: 1,
+    titleContainer: {
         width: '100%',
-        height: '100%',
-        backgroundColor: '#282828',
-        alignItems: 'center',
-        justifyContent: 'space-around'
+        alignItems: 'flex-start',
     },
     titleStyle: {
         color: "#FFFFFF",
         fontFamily: 'Average-Regular',
         fontStyle: 'normal',
         fontWeight: 'normal',
-        fontSize: 24,
+        fontWeight: '400',
+        fontSize: FontSizeRP(24),
         lineHeight: 29,
     },
-    contactForm: {
-        display: 'flex',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around'
-
-    },
-    screen:{
+    screen: {
         flex: 1,
+        paddingHorizontal: WidthDP(30),
         backgroundColor: '#282828',
-        alignItems: 'center',
-        justifyContent: 'space-around'
+        alignItems: 'flex-start',
+        justifyContent: 'space-evenly'
     }
 })

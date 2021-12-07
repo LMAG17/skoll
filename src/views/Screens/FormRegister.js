@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import InputSelectCustom from '../../components/InputSelectCustom';
 import { finishRegistration } from '../../services/ServiceInteractor';
+import InputCustom from '../../components/InputCustom';
+import { FontSizeRP, HeightDP, WidthDP } from '../../utils/CalculateSize';
 
 const FormRegister = (props) => {
     const genders = [
@@ -42,19 +44,36 @@ const FormRegister = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.containerTitle}>
-                <Text style={styles.titleStyle}>Permitenos conocerte{"\n"} mejor</Text>
+                <Text style={styles.titleStyle}>Permitenos conocerte{"\n"}mejor</Text>
             </View>
-            <View style={{ padding: 20, width: '97%' }} >
-                <Text style={styles.text}>Edad</Text>
-                <TextInput style={styles.input} onChangeText={text => handleChange('age', text)} />
-                <InputSelectCustom genders={genders} selectOptionType={gender} setSelectOptionType={setgender} placeholder="Genero" />
-                <InputSelectCustom genders={genders} selectOptionType={selectOptionType} setSelectOptionType={setSelectOptionType} placeholder="Me interesa:" />
-                <Text style={styles.text}>Contraseña</Text>
-                <TextInput style={styles.input} onChangeText={text => handleChange('password', text)} secureTextEntry={true} />
+            <View style={styles.form} >
+                <Text style={styles.label}>Edad</Text>
+                <InputCustom
+                    style={styles.input}
+                    onChangeText={text => handleChange('age', text)}
+                />
+                <InputSelectCustom
+                    genders={genders}
+                    selectOptionType={gender}
+                    setSelectOptionType={setgender}
+                    placeholder="Genero"
+                />
+                <InputSelectCustom
+                    genders={genders}
+                    selectOptionType={selectOptionType}
+                    setSelectOptionType={setSelectOptionType}
+                    placeholder="Me interesa:"
+                />
+                <Text style={styles.label}>Contraseña</Text>
+                <InputCustom
+                    style={styles.input}
+                    onChangeText={text => handleChange('password', text)}
+                    secureTextEntry={true}
+                />
             </View>
             <View style={{ marginTop: 50 }}>
                 <TouchableOpacity style={styles.btn} onPress={() => handleRegisterService()}>
-                    <Text style={styles.text}>Continuar</Text>
+                    <Text style={styles.label}>Continuar</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -62,37 +81,50 @@ const FormRegister = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#282828',
+
+    btn: {
+        backgroundColor: '#E8A537',
+        width: WidthDP(250),
+        height: HeightDP(50),
+        justifyContent: 'center',
         alignItems: 'center',
-        justifyContent: 'space-around'
-    }, containerTitle: {
+        borderRadius: 10
+    },
+    btnText: {
+        fontSize: FontSizeRP(20),
+    },
+    form: {
+        width: '100%',
+    },
+    label: {
+        fontFamily: 'Alegreya-VariableFont_wght',
+        fontSize: FontSizeRP(16),
+        fontWeight: '400',
+        lineHeight: 22,
+        marginVertical: HeightDP(4),
+    },
+    input: {
+        marginVertical: HeightDP(4)
+    },
+    titleContainer: {
+        width: '100%',
         alignItems: 'flex-start',
-        width: '80%'
-    }, titleStyle: {
+    },
+    titleStyle: {
         color: "#FFFFFF",
         fontFamily: 'Average-Regular',
         fontStyle: 'normal',
         fontWeight: 'normal',
-        fontSize: 24,
+        fontWeight: '400',
+        fontSize: FontSizeRP(24),
         lineHeight: 29,
     },
-    input: {
-        backgroundColor: "#2D2D2D",
-        height: 40,
-        borderRadius: 10
-    }, text: {
-        fontFamily: 'Alegreya-VariableFont_wght',
-        fontSize: 18
-    },
-    btn: {
-        backgroundColor: '#E8A537',
-        width: 250,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10
+    screen: {
+        flex: 1,
+        paddingHorizontal: WidthDP(30),
+        backgroundColor: '#282828',
+        alignItems: 'flex-start',
+        justifyContent: 'space-evenly'
     }
 })
 

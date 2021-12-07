@@ -9,12 +9,17 @@ export default AppNAvigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        headerMode="none"
-        initialRouteName="Testscreen"
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName="FormRegister"
       >
         {
           StackNavigator.map(navigator => (
             <Stack.Screen
+              options={{
+                backgroundColor: '#282828',
+              }}
               key={navigator.path}
               name={navigator.path}
               component={navigator.component}

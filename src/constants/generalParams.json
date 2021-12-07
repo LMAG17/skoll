@@ -1,0 +1,76 @@
+{
+    "appTheme": {
+        "primary": "#EC6222",
+        "accent": "rgba(234, 170, 65, 1)",
+        "warn": "#F44336",
+        "background": "#282828"
+    },
+    "splashScreen": {
+        "image": "./assets/images/splash.png",
+        "title": "SKOLL",
+        "rights": "Derechos reservados @Skoll"
+    },
+    "login": {
+        "image": "./assets/images/splash.png",
+        "title": "SKOLL",
+        "subtitle": "Accede rapidamente a tus compras",
+        "categories": [
+            {
+                "title": "Usuario",
+                "icon": "person"
+            },
+            {
+                "title": "Contraseña",
+                "icon": "lock"
+            },
+            {
+                "title": "Recordarme",
+                "icon": "checkbox-outline"
+            }
+        ],
+        "buttons": [
+            {
+                "backgroundColor": "#FFFFFF",
+                "textColor": "#000000",
+                "title": "Continúa con apple",
+                "icon": "apple",
+                "action": {
+                    "type": "login",
+                    "payload": "apple"
+                }
+            },
+            {
+                "backgroundColor": "#3B5998",
+                "textColor": "#FFFFFF",
+                "title": "Continúa con facebook",
+                "icon": "facebook",
+                "action": {
+                    "type": "login",
+                    "payload": "facebook"
+                }
+            },
+            {
+                "backgroundColor": "#EC6222",
+                "textColor": "#FFFFFF",
+                "title": "Continúa con tu celular",
+                "icon": "cellphone",
+                "action": {
+                    "type": "action",
+                    "payload": "phoneForm"
+                }
+            }
+        ],
+        "forgotPasswordAsk": "¿Olvidaste tu contraseña?",
+        "forgotPasswordLink": "Recuperala aquí!",
+        "registerLink": "Registrarse"
+    },
+    "register": {
+        "title": "Confirma tus datos \nantes de continuar",
+        "firstNameField": "Nombre",
+        "lastNameField": "Apellido",
+        "phoneField": "Telefono",
+        "emailField": "Correo",
+        "fromField": "Estas en:",
+        "continueButton": "Continuar"
+    }
+}

@@ -6,12 +6,17 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './redux/store/index';
 import AppNavigator from './views/navigation/AppNavigator';
 import SplashScreen from './views/Screens/SplashScreen';
-
+import { Appearance } from 'react-native';
 export default function App() {
   const [isSetup, setisSetup] = useState(false)
-   useEffect(() => {
+  useEffect(() => {
+    Appearance.addChangeListener(({ colorScheme }) => {
+      console.log(colorScheme)
+    })
+  }, [])
+  useEffect(() => {
     console.log(isSetup);
-   }, [isSetup]);
+  }, [isSetup]);
 
   return (
     <Provider store={store}>
