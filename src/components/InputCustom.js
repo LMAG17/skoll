@@ -24,6 +24,7 @@ export default function InputCustom(props) {
                 textContentType={textContentType}
                 onChangeText={onChangeText}
                 placeholder={placeholder}
+                secureTextEntry={textContentType === 'password'}
                 value={value}
             />
         </View>
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     },
 })
 
-InputCustom.prototypes = {
+InputCustom.prototype = {
     placeholder: PropTypes.string,
     value: PropTypes.string,
     onChangeText: PropTypes.func,

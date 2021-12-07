@@ -8,12 +8,8 @@ import { register as registerService } from '../../../services/ServiceInteractor
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize'
 
 export default function Register(props) {
-
     const dispatch = useDispatch()
-
     const { user, parameters } = useSelector(state => state)
-
-    const [step, setStep] = useState(0)
 
     const { register, appTheme } = parameters
 
@@ -57,87 +53,63 @@ export default function Register(props) {
             <View style={styles.titleContainer}>
                 <Text style={styles.titleStyle}>{register.title}</Text>
             </View>
-
-            {
-                step === 0 &&
-                <View style={styles.form}>
-                    <Text style={styles.label}>{register.firstNameField}</Text>
-                    <InputCustom
-                        style={styles.input}
-                        onChangeText={text =>
-                            handleChange('firstname', text)
-                        }
-                        value={data.firstname}
-                    />
-                    <Text style={styles.label}>{register.lastNameField}</Text>
-                    <InputCustom
-                        style={styles.input}
-                        onChangeText={text =>
-                            handleChange('lastName', text)
-                        }
-                        value={data.lastName} />
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <View style={{ width: '48%' }}>
-                            <Text style={styles.label}>{register.phoneField}</Text>
-                            <InputCustom
-                                style={styles.input}
-                                source={require('../../../assets/img/smartphone.png')}
-                                onChangeText={text =>
-                                    handleChange('cellPhone', text)
-                                }
-                                textContentType="emailAddress"
-                            />
-                        </View>
-                        <View style={{ width: '48%', overflow: 'hidden' }}>
-                            <Text style={styles.label}>{register.emailField}</Text>
-                            <InputCustom
-                                style={styles.input}
-                                onChangeText={text =>
-                                    handleChange('email', text)
-                                }
-                                textContentType="emailAddress"
-                                value={data.email}
-                                source={require('../../../assets/img/email.png')}
-                                iconStyles={{ height: HeightDP(16), width: WidthDP(20) }}
-                            />
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <Text style={[styles.label, { marginRight: WidthDP(8) }]}>{register.fromField}</Text>
-                        <Image
-                            source={require('../../../assets/img/colombia.png')}
-                            style={{ height: HeightDP(20), width: WidthDP(20) }}
+            <View style={styles.form}>
+                <Text style={styles.label}>{register.firstNameField}</Text>
+                <InputCustom
+                    style={styles.input}
+                    onChangeText={text =>
+                        handleChange('firstname', text)
+                    }
+                    value={data.firstname}
+                />
+                <Text style={styles.label}>{register.lastNameField}</Text>
+                <InputCustom
+                    style={styles.input}
+                    onChangeText={text =>
+                        handleChange('lastName', text)
+                    }
+                    value={data.lastName} />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ width: '48%' }}>
+                        <Text style={styles.label}>{register.phoneField}</Text>
+                        <InputCustom
+                            style={styles.input}
+                            source={require('../../../assets/img/smartphone.png')}
+                            onChangeText={text =>
+                                handleChange('cellPhone', text)
+                            }
+                            textContentType="emailAddress"
                         />
                     </View>
-                    <InputCustom
-                        source={require('../../../assets/img/point.png')}
-                        iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
-                        onChangeText={text =>
-                            handleChange('city', text)
-                        }
+                    <View style={{ width: '48%', overflow: 'hidden' }}>
+                        <Text style={styles.label}>{register.emailField}</Text>
+                        <InputCustom
+                            style={styles.input}
+                            onChangeText={text =>
+                                handleChange('email', text)
+                            }
+                            textContentType="emailAddress"
+                            value={data.email}
+                            source={require('../../../assets/img/email.png')}
+                            iconStyles={{ height: HeightDP(16), width: WidthDP(20) }}
+                        />
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <Text style={[styles.label, { marginRight: WidthDP(8) }]}>{register.fromField}</Text>
+                    <Image
+                        source={require('../../../assets/img/colombia.png')}
+                        style={{ height: HeightDP(20), width: WidthDP(20) }}
                     />
                 </View>
-            }
-            {
-                step === 1 &&
-                <View style={styles.form}>
-                    <Text style={styles.label}>{register.firstNameField}</Text>
-                    <InputCustom
-                        style={styles.input}
-                        onChangeText={text =>
-                            handleChange('firstname', text)
-                        }
-                        value={data.firstname}
-                    />
-                    <Text style={styles.label}>{register.lastNameField}</Text>
-                    <InputCustom
-                        style={styles.input}
-                        onChangeText={text =>
-                            handleChange('lastName', text)
-                        }
-                        value={data.lastName} />
-                </View>
-            }
+                <InputCustom
+                    source={require('../../../assets/img/point.png')}
+                    iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
+                    onChangeText={text =>
+                        handleChange('city', text)
+                    }
+                />
+            </View>
             <View style={{ width: '100%', alignItems: 'center' }}>
                 <TouchableOpacity style={styles.btn} onPress={() => {
                     handleGetPreRegister()
