@@ -3,9 +3,9 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
-import { onFacebookButtonPress } from '../../../firebase/auth';
-import { setUser } from '../../../middlewares/user/userMiddleware';
-import { facebookLogin, login as loginService } from '../../../services/ServiceInteractor';
+import InputCustom from '../../../components/InputCustom';
+import { handleLoginFacebook } from '../../../controllers/BaseController';
+import { login as loginService } from '../../../services/ServiceInteractor';
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize';
 
 export default function LoginScreen(props) {
@@ -17,6 +17,8 @@ export default function LoginScreen(props) {
     const parameters = useSelector(state => state.parameters)
 
     const dispatch = useDispatch();
+
+    const navigation = props.navigation;
 
     const { login, appTheme } = parameters;
 
@@ -33,37 +35,11 @@ export default function LoginScreen(props) {
         })
     }
 
-    const handlerGetFacebook = async (data) => {
-        try {
-            let getFacebook = await facebookLogin(data)
-            console.log("getFacebook", getFacebook);
-        } catch (error) {
-            console.log("ERROR DE VISTA", error);
-            props.navigation.navigate('Register')
-        }
-    }
-
-    const handleLoginFacebook = async () => {
-        onFacebookButtonPress().then((res) => {
-            const users = {
-                firstName: res.sign.additionalUserInfo.profile.first_name,
-                lastName: res.sign.additionalUserInfo.profile.last_name,
-                email: res.sign.additionalUserInfo.profile.email
-            }
-            dispatch(setUser(users))
-            handlerGetFacebook({
-                tokenFacebook: res.data.accessToken,
-                expiredToken: res.data.expirationTime,
-                uuid: res.sign.user.uid
-            })
-        })
-    }
-
     const handleLoginType = (action) => {
         switch (action.type) {
             case 'login':
                 if (action.payload == "facebook") {
-                    handleLoginFacebook()
+                    handleLoginFacebook({ dispatch, navigation })
                 }
                 else if (action.payload == "apple") {
                     console.log("Login con apple")
@@ -82,13 +58,23 @@ export default function LoginScreen(props) {
     }
 
     return (
-        <View style={[styles.screen, { backgroundColor: appTheme.background }]}>
+        <View
+            style={[styles.screen, { backgroundColor: appTheme.background }]}
+        >
+
             <Image
                 style={styles.image}
                 source={require("../../../assets/img/login.png")}
             />
-            <Text style={styles.text}>{login.title}</Text>
-            <Text style={styles.helpText}>{login.subtitle}</Text>
+
+            <Text style={styles.text}>
+                {login.title}
+            </Text>
+
+            <Text style={styles.helpText}>
+                {login.subtitle}
+            </Text>
+
             <View style={styles.categories}>
                 {
                     login.categories.map((item, i) =>
@@ -103,45 +89,65 @@ export default function LoginScreen(props) {
                     )
                 }
             </View>
-            <View>
-                {
-                    login.buttons.map(button =>
-                        <TouchableOpacity
-                            style={[styles.buttonStyle, { backgroundColor: button.backgroundColor }]}
-                            key={button.title}
-                            onPress={() => {
-                                console.log("xddd")
-                                handleLoginType(button.action)
-                            }}>
-                            <View style={styles.buttonContainerStyle}>
-                                <Image
-                                    style={styles.buttonImage}
-                                    source={icons[button.icon]}
-                                />
-                                <Text style={[styles.buttonText, { color: button.textColor }]}>{button.title}</Text>
-                            </View>
+
+            {
+                loginPhone ?
+                    <View style={{
+                        borderRadius: 20,
+                        marginVertical: HeightDP(10),
+                        paddingVertical: HeightDP(10),
+                        paddingHorizontal: WidthDP(40),
+                        justifyContent: 'center',
+                    }}>
+                        <TouchableOpacity onPress={() => setLoginPhone(false)}>
+                            <Text >
+                                {"<- Atras"}
+                            </Text>
                         </TouchableOpacity>
-                    )
-                }
-            </View>
-            {loginPhone ?
-                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ ...styles.label, }}>Telefono</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#fff', width: '80%', height: 40, borderRadius: 18, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={require('../../../assets/img/smartphone.png')} style={{ marginLeft: 30 }} />
-                        <TextInput style={{ width: '100%' }} onChangeText={text => handleChange('username', text)} textContentType={'telephoneNumber'} />
+                        <Text style={{ ...styles.label, }}>Telefono</Text>
+                        <InputCustom
+                            source={require('../../../assets/img/smartphone.png')}
+                            onChangeText={text => handleChange('username', text)}
+                            textContentType={'telephoneNumber'}
+                        />
+                        <Text style={styles.label}>Contraseña</Text>
+                        <InputCustom
+                            onChangeText={text => handleChange('password', text)}
+                            textContentType={"password"}
+                        />
+                        <View style={{ marginTop: 50, width: WidthDP(432 - 50), alignItems: 'center' }}>
+                            <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
+                                <Text style={styles.label}>Continuar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <Text style={styles.label}>Contraseña</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#fff', width: '80%', height: 40, borderRadius: 18, justifyContent: 'center', alignItems: 'center' }}>
-                        <TextInput style={{ width: '100%' }} onChangeText={text => handleChange('password', text)} secureTextEntry={true} />
+                    :
+                    <View>
+                        {
+                            login.buttons.map(button =>
+                                <TouchableOpacity
+                                    style={[styles.buttonStyle, { backgroundColor: button.backgroundColor }]}
+                                    key={button.title}
+                                    onPress={() => {
+                                        console.log("xddd")
+                                        handleLoginType(button.action)
+                                    }}>
+
+                                    <View style={styles.buttonContainerStyle}>
+
+                                        <Image
+                                            style={styles.buttonImage}
+                                            source={icons[button.icon]}
+                                        />
+
+                                        <Text style={[styles.buttonText, { color: button.textColor }]}>{button.title}</Text>
+
+                                    </View>
+
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
-                    <View style={{ marginTop: 50 }}>
-                        <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
-                            <Text style={styles.label}>Continuar</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                : null
             }
             <View style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordAsk}>
@@ -163,6 +169,7 @@ const styles = StyleSheet.create({
     label: {
         fontFamily: 'Alegreya-VariableFont_wght',
         fontSize: FontSizeRP(18),
+        marginVertical: HeightDP(8),
     },
     container: {
         width: '100%',

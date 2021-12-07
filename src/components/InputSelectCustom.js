@@ -1,115 +1,99 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import colors from '../constants/colors';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FontSizeRP, HeightDP, WidthDP } from '../utils/CalculateSize';
 
+export default function InputCustom(props) {
+    const {
+        options,
+        renderProp,
+        source,
+        placeholder,
+        value,
+        onChangeText,
+        style,
+        textContentType,
+        iconStyles,
+    } = props;
 
-
-export default function InputSelectCustom(props) {
-    const { genders, selectOptionType, setSelectOptionType, placeholder } = props;
-    const [toggle, setToggle] = useState(false);
-
-    const handleOpenModal = () => {
-        setToggle(!toggle)
-        console.log(toggle)
-    }
+    const [open, setOpen] = useState(false);
 
     return (
-        <View>
-            <TouchableOpacity onPress={() => handleOpenModal()}>
-                <View style={styles.Input}>
-                    <Image source={require('../assets/img/point.png')} />
-                    <View style={{flex:0.2}}></View>
-                    <Text style={{...styles.text,flex:1}}>
-                        { selectOptionType != undefined ? selectOptionType : placeholder }
-                    </Text>
-                </View>
+        <View style={[styles.container, style]}>
+            <TouchableOpacity onPress={() => { setOpen(true) }} style={[styles.touchable]}>
+                <Image
+                    style={[styles.icon, iconStyles]}
+                    source={source}
+                />
+                <Text
+                    style={styles.text}
+                >
+                    {value}
+                </Text>
             </TouchableOpacity>
-
-            <Modal
-            
-                animationType="slide"
-                onDismiss={() => console.log('close')}
-                onShow={() => console.log('show')}
-                transparent
-                visible={toggle}
-            >
-                <TouchableOpacity  style={styles.ModalBg} onPress={()=>{setToggle(!toggle)}}>                    
-                    <View style={styles.ModalAlert}>
-                        <ScrollView>
-                            <View style={{justifyContent: 'center', flex: 1}}>
-                                {genders.map((gender) => {
-                                    return (
-                                        <TouchableOpacity key={gender.name} onPress={() => {
-                                            setSelectOptionType(gender.name);
-                                            setToggle(!toggle);
-                                        }}>
-                                            <Text key={gender.name} style={{...styles.text,marginVertical:10,textAlign:'center'}} >{gender.name}</Text>
-                                        </TouchableOpacity>
-                                    )
-                                })}
-                            </View>
-                        </ScrollView>
-                    </View>
-                </TouchableOpacity>
-            </Modal>
+            {
+                open &&
+                <View style={{ width: '100%' }}>
+                    {options.map((option, index) => {
+                        return (
+                            <TouchableOpacity
+                                style={{ backgroundColor: option[renderProp] === value ? "rgba(234, 170, 65, 1)" : "transparent", width: '100%' }}
+                                key={index}
+                                onPress={() => {
+                                    setOpen(false);
+                                    onChangeText(option[renderProp]);
+                                }}>
+                                <Text style={[styles.option, { color: option[renderProp] === value ? "black" : "white" }]}>{option[renderProp]}</Text>
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>
+            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    text:{
-        color: "#FFFFFF",
-        fontFamily: 'Average-Regular',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: 21,
-        lineHeight: 29,
+    container: {
+        borderRadius: 5,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        backgroundColor: '#2D2D2D',
     },
-    ModalAlert: {
-        backgroundColor: colors.white,
-        paddingTop: 14,
-        borderRadius: 10,   
-        width:"80%",
-        alignSelf:'center'     
-    },
-    ModalBg: {
-        flex: 1,
-        backgroundColor: 'rgba(1,1,1,0.5)',
-        justifyContent:'center',
-    },
-    Input: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        height: Platform.OS == 'ios' ? 40 : 40,
+    touchable: {
+        height: HeightDP(35),
         width: '100%',
-        borderRadius: 10,
-        backgroundColor: "#2D2D2D",
-        marginTop:20,
-        
+        flexDirection: 'row',
+        borderRadius: 5,
+        alignItems: 'center',
+        overflow: 'hidden',
+        marginVertical: HeightDP(8),
     },
-    Fonts: {
-       padding:4,
-        alignSelf:'center',
-        marginBottom: 8,
-        color:"#98989D"
+    icon: {
+        width: WidthDP(24),
+        height: HeightDP(24),
+        margin: WidthDP(4)
     },
-    
-    iconStyle: {
-        fontWeight: 'bold',
-        color: colors.primary,
-        fontSize: 30
+    text: {
+        fontFamily: 'Alegreya-VariableFont_wght',
+        fontSize: FontSizeRP(16),
+        marginVertical: HeightDP(8),
     },
-    image:{
-        height:30,
-        width:30
+    option: {
+        fontFamily: 'Alegreya-VariableFont_wght',
+        marginHorizontal: WidthDP(20),
+        marginVertical: HeightDP(8),
+        fontSize: FontSizeRP(16),
     }
-});
+})
 
-InputSelectCustom.propTypes = {
-    genders: PropTypes.array.isRequired, 
-    selectOptionType: PropTypes.string.isRequired, 
-    setSelectOptionType: PropTypes.func.isRequired, 
-    placeholder: PropTypes.string
+InputCustom.prototypes = {
+    placeholder: PropTypes.string,
+    value: PropTypes.string,
+    onChangeText: PropTypes.func,
+    style: PropTypes.object,
+    iconStyles: PropTypes.object,
+    source: PropTypes.any,
+    textContentType: PropTypes.string,
 }
