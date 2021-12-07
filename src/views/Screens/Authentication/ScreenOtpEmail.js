@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { generateOtp, validateOtp as validateOtpService } from '../../../services/ServiceInteractor';
+import InputCustom from '../../../components/InputCustom';
+import { WidthDP } from '../../../utils/CalculateSize';
 
 const ScreenOtpEmail = (props) => {
     const [data, setData] = useState({});
@@ -44,15 +46,12 @@ const ScreenOtpEmail = (props) => {
             <View style={styles.containerTitle}>
                 <Text style={styles.titleStyle}>Hemos dectectado un{"\n"}nuevo cliente.</Text>
             </View>
-            <TouchableOpacity onPress={() => handleGenerateOtp()}>
-                <Text>Generar otp</Text>
-            </TouchableOpacity>
             <View style={{ padding: 20 }} >
                 <View>
                     <Text style={styles.titleStyle}>Ingresa el código que hemos enviado a tu correo electrónico: </Text>
                 </View>
                 <View style={{ ...styles.input, alignSelf: 'stretch', marginTop: 40 }}>
-                    <TextInput onChangeText={text => handleChange('otp', text)} />
+                    <InputCustom onChangeText={text => handleChange('otp', text)} />
                 </View>
             </View>
             <View style={{ marginTop: 50 }}>
@@ -60,6 +59,10 @@ const ScreenOtpEmail = (props) => {
                     <Text style={styles.text}>Continuar</Text>
                 </TouchableOpacity>
             </View>
+
+            <TouchableOpacity onPress={() => handleGenerateOtp()}>
+                <Text>Generar otp</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -69,11 +72,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#282828',
         alignItems: 'center',
-        justifyContent: 'space-around'
-    }, containerTitle: {
+        justifyContent: 'space-around',
+        paddingHorizontal: WidthDP(30)
+    },
+    containerTitle: {
         alignItems: 'flex-start',
-        width: '80%'
-    }, titleStyle: {
+        width: '100%',
+    },
+    titleStyle: {
+        textAlign:'left',
         color: "#FFFFFF",
         fontFamily: 'Average-Regular',
         fontStyle: 'normal',
