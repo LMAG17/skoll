@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
-import { getParameters } from '../../controllers/splashScreenController';
+import { getParameters } from '../../controllers/BaseController';
 import { FontSizeRP, WidthDP } from '../../utils/CalculateSize';
 
 export default function SplashScreen(props) {

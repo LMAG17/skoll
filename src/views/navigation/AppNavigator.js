@@ -12,7 +12,7 @@ export default AppNAvigator = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Terms"
+        initialRouteName="HomeScreen"
       >
         {
           StackNavigator.map(navigator => (
