@@ -1,75 +1,90 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getParameters } from '../../controllers/splashScreenController';
+import { FontSizeRP, WidthDP } from '../../utils/CalculateSize';
 
-const ScreenWidth = Dimensions.get("window").width;
 export default function SplashScreen(props) {
-    const { setisSetup } = props;
-    console.log("props", props);
+
     const [progress, setprogress] = useState(0)
 
+    const parameters = useSelector(state => state.parameters);
+
+    const dispatch = useDispatch()
+
+    const { splashScreen, appTheme } = parameters;
+
+    const { setisSetup } = props;
+
     useEffect(() => {
+        getParameters({ dispatch });
         setTimeout(() => {
             if (progress < 100) {
                 setprogress(progress + 20);
-                // addprogress()
-
             }
             else {
                 setisSetup(true)
-                console.log("nlfwknlfwklwenfk");
-                
             }
         }, 500);
     }, [progress])
 
     return (
         <View style={styles.screen}>
-            <View style={styles.container} >
+            <View style={[styles.container, { backgroundColor: appTheme.background }]} >
                 <Image
                     style={styles.image}
                     source={require("../../assets/img/Logo.png")} />
-                <Text style={styles.text}>SKOLL</Text>
+                <Text style={styles.text}>{splashScreen.title}</Text>
                 <View style={styles.lineStyle} />
-                <Text style={styles.textSmall}>Derechos reservados @Skoll</Text>
-                <Progress.Bar progress={progress / 100} width={200} color="rgba(234, 170, 65, 1)" />
+                <View style={styles.lineThinStyle} />
+                <Text style={styles.textSmall}>{splashScreen.rights}</Text>
+                <Progress.Bar progress={progress / 100} width={200} color={appTheme.accent} style={{ marginVertical: 20 }} />
             </View>
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     container: {
-        width: ScreenWidth,
+        width: WidthDP(432),
         flex: 1,
-        backgroundColor: 'rgb(40, 40, 40)',
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     image: {
-        width: 200,
-        height: 200,
+        width: WidthDP(200),
+        height: WidthDP(200),
     },
     text: {
         color: '#fff',
         fontFamily: 'Alegreya-Italic',
-        fontSize: 80
+        fontSize: FontSizeRP(72)
     },
     screen: {
         width: '100%',
         height: '100%',
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
     lineStyle: {
         borderWidth: 0.5,
         borderColor: '#fff',
-        margin: 10,
-        width: 120
+        margin: 5,
+        width: WidthDP(129)
+    },
+    lineThinStyle: {
+        borderWidth: 0.5,
+        borderColor: '#fff',
+        width: WidthDP(74)
     },
     textSmall: {
-        fontSize: 2
+        fontSize: FontSizeRP(5)
     }
 });
+
+SplashScreen.propTypes = {
+    setisSetup: PropTypes.func.isRequired,
+}
