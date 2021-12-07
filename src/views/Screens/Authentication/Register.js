@@ -44,6 +44,7 @@ export default function Register(props) {
                 firstname: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                city: city
             })
         }
     }, [user])

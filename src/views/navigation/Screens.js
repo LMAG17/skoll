@@ -7,6 +7,7 @@ import Main from '../Screens/Main';
 import SplashScreen from '../Screens/SplashScreen';
 import Terms from '../Screens/Terms';
 import Testscreen from '../Screens/Testscreen';
+import Departaments from '../Screens/Departaments';
 import HomeTabs from './HomeTabs';
 
 export default [
@@ -45,6 +46,10 @@ export default [
     {
         path: "Testscreen",
         component: Testscreen
+    },
+    {
+        path: "Departaments",
+        component: Departaments
     },
     {
         path: "Terms",

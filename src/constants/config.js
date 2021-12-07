@@ -11,7 +11,7 @@ export const config = {
         merchantCategory: "merchantCategory",
         advertising: "advertising",
         event: "event",
-        departaments: "departaments",
+        departaments: "departaments/",
         merchantFilter: "merchantFilter",
         services: "services",
         coordinates: "coordinates",
@@ -22,7 +22,7 @@ export const config = {
         confirmation: 'confirmation',
         facebook: 'facebook',
         enableOrderByName: 'enableOrderByName',
-        resources: "resources",
+        resources: "resources/",
         category: "category",
     },
     otp: {
