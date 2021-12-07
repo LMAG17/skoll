@@ -11,7 +11,7 @@ export default function Register(props) {
 
     const dispatch = useDispatch()
 
-    const { user, parameters } = useSelector(state => state)
+    const { user, parameters,city } = useSelector(state => state)
 
     const [step, setStep] = useState(0)
 
@@ -48,6 +48,7 @@ export default function Register(props) {
                 firstname: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                city: city
             })
         }
     }, [user])
@@ -109,13 +110,18 @@ export default function Register(props) {
                             style={{ height: HeightDP(20), width: WidthDP(20) }}
                         />
                     </View>
+                    <TouchableOpacity onPress={()=>{
+                        props.navigation.navigate('Departaments')
+                    }}>
                     <InputCustom
                         source={require('../../../assets/img/point.png')}
                         iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
                         onChangeText={text =>
                             handleChange('city', text)
                         }
+                        value={data.city}
                     />
+                    </TouchableOpacity>
                 </View>
             }
             {

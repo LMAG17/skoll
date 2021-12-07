@@ -12,7 +12,7 @@ export default AppNAvigator = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="FormRegister"
+        initialRouteName="Departaments"
       >
         {
           StackNavigator.map(navigator => (

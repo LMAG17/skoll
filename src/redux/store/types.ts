@@ -17,6 +17,7 @@ export interface AppState {
     token: string;
     user: User;
     parameters: Object;
+    city:string;
 }
 
 export const initialState: AppState = {
@@ -34,5 +35,6 @@ export const initialState: AppState = {
         firstName: "",
         lastName: "",
         email: "",
-    }
+    },
+    city:''
 };

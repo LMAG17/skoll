@@ -32,7 +32,7 @@ export default function SplashScreen(props) {
 
     return (
         <View style={styles.screen}>
-            <View style={[styles.container, { backgroundColor: appTheme.background }]} >
+            <View style={[styles.container]} >
                 <Image
                     style={styles.image}
                     source={require("../../assets/img/Logo.png")} />

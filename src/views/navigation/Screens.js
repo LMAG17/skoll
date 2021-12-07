@@ -7,6 +7,7 @@ import FormRegister from '../Screens/FormRegister'
 import HomeTabs from './HomeTabs'
 import Main from '../Screens/Main';
 import Testscreen from '../Screens/Testscreen';
+import Departaments from '../Screens/Departaments';
 
 export default [
     {
@@ -45,4 +46,8 @@ export default [
         path: "Testscreen",
         component: Testscreen
     },
+    {
+        path:"Departaments",
+        component:Departaments
+    }
 ]
