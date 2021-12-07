@@ -1,3 +1,5 @@
+import parameters from '../../constants/generalParams.json';
+
 export interface User {
     firstName: string,
     lastName: string,
@@ -18,7 +20,7 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-    parameters: {},
+    parameters: parameters,
     title: "Hola Mundo",
     isNetwork: false,
     safeZone: false,
