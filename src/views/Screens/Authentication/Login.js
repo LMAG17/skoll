@@ -5,8 +5,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import InputCustom from '../../../components/InputCustom';
 import { handleLoginFacebook } from '../../../controllers/BaseController';
+import { setToken } from '../../../middlewares/token/tokenMiddleware';
 import { setUser } from '../../../middlewares/user/userMiddleware';
-import { login as loginService } from '../../../services/ServiceInteractor';
+import { getUserData, login as loginService } from '../../../services/ServiceInteractor';
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize';
 
 export default function LoginScreen(props) {
@@ -15,7 +16,7 @@ export default function LoginScreen(props) {
 
     const [data, setData] = useState({});
 
-    const parameters = useSelector(state => state.parameters)
+    const { parameters, user } = useSelector(state => state)
 
     const dispatch = useDispatch();
 
@@ -54,8 +55,26 @@ export default function LoginScreen(props) {
         }
     }
 
+    const handleLoginResponse = async (responseLogin) => {
+        dispatch(setToken(responseLogin.token))
+        let clientData = await getUserData({ token: responseLogin.token })
+        dispatch(setUser({
+            ...user,
+            ...clientData.data,
+        }))
+        navigation.navigate('HomeScreen')
+    }
+
     const handleLogin = async () => {
-        loginService(data)
+        try {
+            loginService(data).then(res => {
+                handleLoginResponse(res)
+            }).catch(err => {
+                handleLoginResponse(err)
+            })
+        } catch (error) {
+            console.log("login error", error)
+        }
     }
 
     return (
