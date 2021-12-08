@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import InputCustom from '../../../components/InputCustom'
 import { setSessionId } from '../../../middlewares/sessionId/sessionIdMiddleware'
+import { setUser } from '../../../middlewares/user/userMiddleware'
 import { register as registerService } from '../../../services/ServiceInteractor'
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize'
 
@@ -104,7 +105,10 @@ export default function Register(props) {
                         style={{ height: HeightDP(20), width: WidthDP(20) }}
                     />
                 </View>
-                <TouchableOpacity style={styles.containerDepartment} onPress={() => navigation.navigate('Departaments')}>
+                <TouchableOpacity style={styles.containerDepartment} onPress={() => {
+                    dispatch(setUser(data))
+                    navigation.navigate('Departaments')
+                }}>
                     <Image
                         style={styles.iconDepartment}
                         source={require('../../../assets/img/point.png')}

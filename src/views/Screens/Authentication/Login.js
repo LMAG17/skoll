@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import InputCustom from '../../../components/InputCustom';
 import { handleLoginFacebook } from '../../../controllers/BaseController';
+import { setUser } from '../../../middlewares/user/userMiddleware';
 import { login as loginService } from '../../../services/ServiceInteractor';
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize';
 
@@ -157,7 +158,10 @@ export default function LoginScreen(props) {
                     {login.forgotPasswordLink}
                 </Text>
             </View>
-            <TouchableOpacity onPress={() => { props.navigation.navigate('Register') }} >
+            <TouchableOpacity onPress={() => {
+                dispatch(setUser({}));
+                props.navigation.navigate('Register')
+            }} >
                 <Text style={styles.forgotPasswordLink}>
                     {login.registerLink}
                 </Text>
