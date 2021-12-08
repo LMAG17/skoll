@@ -5,7 +5,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import InputCustom from '../../../components/InputCustom'
 import InputSelectCustom from '../../../components/InputSelectCustom'
-import { finishRegistration } from '../../../services/ServiceInteractor'
+import { setToken } from '../../../middlewares/token/tokenMiddleware'
+import { setUser } from '../../../middlewares/user/userMiddleware'
+import { finishRegistration, getUserData } from '../../../services/ServiceInteractor'
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize'
 
 export default function Register() {
@@ -14,9 +16,9 @@ export default function Register() {
 
     const dispatch = useDispatch()
 
-    const { parameters, sessionId } = useSelector(state => state)
+    const { parameters, sessionId, user } = useSelector(state => state)
 
-    const { register, appTheme } = parameters
+    const { register } = parameters
 
     const [data, setdata] = useState({})
 
@@ -27,8 +29,20 @@ export default function Register() {
 
     const handleRegisterService = async () => {
         try {
-            let responseRegister = await finishRegistration(data)
+            const finishRegistrationData = {
+                ...data,
+                ...user,
+                sessionId: sessionId,
+            }
+            console.log("finishRegistrationData", finishRegistrationData)
+            let responseRegister = await finishRegistration(finishRegistrationData)
             dispatch(setToken(responseRegister.data.token))
+            let clientData = await getUserData({ token: responseRegister.data.token })
+            dispatch(setUser({
+                ...user,
+                ...clientData.data,
+            }))
+            navigation.navigate('HomeScreen')
         } catch (error) {
             console.log("ERROR DE VISTA", error);
         }
@@ -48,13 +62,13 @@ export default function Register() {
                 <Text style={styles.titleStyle}>Permitenos conocerte mejor</Text>
             </View>
             <View style={styles.form}>
-                <Text style={styles.label}>{register.firstNameField}</Text>
+                <Text style={styles.label}>Edad</Text>
                 <InputCustom
                     style={styles.input}
                     onChangeText={text =>
-                        handleChange('firstname', text)
+                        handleChange('age', text)
                     }
-                    value={data.firstname}
+                    value={data.age}
                 />
                 <Text style={styles.label}>Genero</Text>
                 <InputSelectCustom

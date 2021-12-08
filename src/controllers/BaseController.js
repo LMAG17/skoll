@@ -18,13 +18,16 @@ export const handleLoginFacebook = async ({ dispatch, navigation }) => {
         const userFacebook = {
             firstName: loginFacebook.sign.additionalUserInfo.profile.first_name,
             lastName: loginFacebook.sign.additionalUserInfo.profile.last_name,
-            email: loginFacebook.sign.additionalUserInfo.profile.email
+            email: loginFacebook.sign.additionalUserInfo.profile.email,
+            tokenFacebook: loginFacebook.data.accessToken,
+            timeExpiredToken: loginFacebook.data.expirationTime,
+            userId: loginFacebook.sign.user.uid,
         }
         dispatch(setUser(userFacebook))
         await facebookLogin({
-            tokenFacebook: res.data.accessToken,
-            expiredToken: res.data.expirationTime,
-            uuid: res.sign.user.uid
+            tokenFacebook: loginFacebook.data.accessToken,
+            expiredToken: loginFacebook.data.expirationTime,
+            uuid: loginFacebook.sign.user.uid
         })
     }
     catch (error) {
