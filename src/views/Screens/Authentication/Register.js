@@ -106,7 +106,7 @@ export default function Register(props) {
                     />
                 </View>
                 <TouchableOpacity style={styles.containerDepartment} onPress={() => {
-                    dispatch(setUser(data))
+                    dispatch(setUser({ ...data, firstName: data.firstname }))
                     navigation.navigate('Departaments')
                 }}>
                     <Image
