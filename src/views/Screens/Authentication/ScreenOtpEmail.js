@@ -19,7 +19,7 @@ const ScreenOtpEmail = (props) => {
         console.log("FUncion de la vista", sessionId);
         const body = { "sessionId": sessionId }
         try {
-            let responseGenerateOtp = await generateOtp("GENERATE_OTP_REGISTRY", body);
+            let responseGenerateOtp = await generateOtp({ transaction: "GENERATE_OTP_REGISTRY", body });
             console.log("RESPUESTA_Otp", responseGenerateOtp);
         } catch (error) {
             console.log("ERROR DE VISTA", error);
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     titleStyle: {
-        textAlign:'left',
+        textAlign: 'left',
         color: "#FFFFFF",
         fontFamily: 'Average-Regular',
         fontStyle: 'normal',
