@@ -24,11 +24,12 @@ export const handleLoginFacebook = async ({ dispatch, navigation }) => {
             userId: loginFacebook.sign.user.uid,
         }
         dispatch(setUser(userFacebook))
-        await facebookLogin({
+        const facenookResponse = await facebookLogin({
             tokenFacebook: loginFacebook.data.accessToken,
             expiredToken: loginFacebook.data.expirationTime,
             uuid: loginFacebook.sign.user.uid
         })
+        console.log("facenookResponse", facenookResponse)
     }
     catch (error) {
         navigation.navigate('Register')

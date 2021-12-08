@@ -42,6 +42,7 @@ export default function Register(props) {
     useEffect(() => {
         if (user) {
             setdata({
+                ...user,
                 ...data,
                 firstname: user.firstName,
                 lastName: user.lastName,
