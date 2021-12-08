@@ -2,7 +2,7 @@ import PARAMETERS from '../constants/generalParams.json';
 import { onFacebookButtonPress } from '../firebase/auth';
 import { setParameters } from '../middlewares/parameters/parametersMiddleware';
 import { setUser } from '../middlewares/user/userMiddleware';
-import { facebookLogin } from '../services/ServiceInteractor';
+import { departaments, facebookLogin } from '../services/ServiceInteractor';
 
 export const getParameters = ({ dispatch }) => {
     dispatch(setParameters(PARAMETERS));
@@ -30,4 +30,17 @@ export const handleLoginFacebook = async ({ dispatch, navigation }) => {
     catch (error) {
         navigation.navigate('Register')
     }
+}
+
+export const getDepartments = async () => {
+    const serviceResponse = await departaments()
+    const newDepartments = await Promise.all(
+        Object.keys(serviceResponse.data.colombia).map(key => {
+            return ({
+                name: key,
+                cities: serviceResponse.data.colombia[key]
+            })
+        })
+    )
+    return newDepartments
 }

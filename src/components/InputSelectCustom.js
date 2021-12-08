@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FontSizeRP, HeightDP, WidthDP } from '../utils/CalculateSize';
 
 export default function InputCustom(props) {
@@ -10,6 +10,7 @@ export default function InputCustom(props) {
         source,
         placeholder,
         value,
+        onChange,
         onChangeText,
         style,
         textContentType,
@@ -33,21 +34,24 @@ export default function InputCustom(props) {
             </TouchableOpacity>
             {
                 open &&
-                <View style={{ width: '100%' }}>
-                    {options.map((option, index) => {
-                        return (
-                            <TouchableOpacity
-                                style={{ backgroundColor: option[renderProp] === value ? "rgba(234, 170, 65, 1)" : "transparent", width: '100%' }}
-                                key={index}
-                                onPress={() => {
-                                    setOpen(false);
-                                    onChangeText(option[renderProp]);
-                                }}>
-                                <Text style={[styles.option, { color: option[renderProp] === value ? "black" : "white" }]}>{option[renderProp]}</Text>
-                            </TouchableOpacity>
-                        )
-                    })}
-                </View>
+                <ScrollView style={{ width: '100%' }}>
+                    <View style={{ width: '100%' }}>
+                        {options.map((option, index) => {
+                            return (
+                                <TouchableOpacity
+                                    style={{ backgroundColor: option[renderProp] === value ? "rgba(234, 170, 65, 1)" : "transparent", width: '100%' }}
+                                    key={index}
+                                    onPress={() => {
+                                        setOpen(false);
+                                        if (onChange) onChange(option);
+                                        if (onChangeText) onChangeText(option[renderProp]);
+                                    }}>
+                                    <Text style={[styles.option, { color: option[renderProp] === value ? "black" : "white" }]}>{option[renderProp]}</Text>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </View>
+                </ScrollView>
             }
         </View>
     )
@@ -91,6 +95,7 @@ const styles = StyleSheet.create({
 InputCustom.prototypes = {
     placeholder: PropTypes.string,
     value: PropTypes.string,
+    onChange: PropTypes.func,
     onChangeText: PropTypes.func,
     style: PropTypes.object,
     iconStyles: PropTypes.object,

@@ -1,92 +1,125 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
-import { departaments } from '../../services/ServiceInteractor';
-import { FontSizeRP, HeightDP, WidthDP } from '../../utils/CalculateSize';
-import { setCity } from '../../middlewares/city/cityMiddleware'
+import { useNavigation } from '@react-navigation/core'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useDispatch, useSelector } from 'react-redux'
+import InputSelectCustom from '../../components/InputSelectCustom'
+import { getDepartments } from '../../controllers/BaseController'
+import { setUser } from '../../middlewares/user/userMiddleware'
+import { FontSizeRP, HeightDP, WidthDP } from '../../utils/CalculateSize'
 
-const Departaments = (props) => {
-    const [getDepartament, setGetDepartament] = useState({});
-    const [selectionDepart, setSelectionDepart] = useState([]);
-    const [list, setList] = useState(false);
-    const [listCities, setListCities] = useState(false);
+export default function Departaments() {
+
+    const navigation = useNavigation()
+
     const dispatch = useDispatch()
 
-    const handleDepartaments = async () => {
-        setList(true)
-        let getDepartament = await departaments()
-        setGetDepartament(getDepartament.data.colombia)
+    const { parameters, user } = useSelector(state => state)
 
+    const { register } = parameters
 
+    const [data, setdata] = useState({
+        department: {
+            name: '',
+        }
+    })
+
+    const [departments, setDepartments] = useState([])
+
+    const handleChange = (key, value) => {
+        setdata({
+            ...data,
+            [key]: value
+        })
     }
-    const handleCity = () => {
-        setListCities(true)
-        console.log(selectionDepart);
+
+    const handleSelectDepartment = () => {
+        dispatch(setUser({ ...user, city: data.city || data.department.name }))
+        navigation.goBack()
     }
+
+    const getDepartmentsData = async () => {
+        setDepartments(await getDepartments())
+    }
+
+    useEffect(() => {
+        getDepartmentsData()
+    }, [])
+
+    console.log("departments", departments);
 
     return (
-        <View style={styles.container}>
+        <View style={styles.screen}>
+            <View style={styles.titleContainer}>
                 <Text style={styles.titleStyle}>Ingresa el departamento y ciudad donde te encuentras.</Text>
-
-                <View style={{ width: '100%' }}>
-                    <TouchableOpacity onPress={handleDepartaments}>
-                        <Text style={styles.label}>Departamento</Text>
-                        <View style={styles.lineStyle}></View>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ width: '100%' }}>
-                    <TouchableOpacity onPress={handleCity}>
+            </View>
+            <View style={styles.form}>
+                <Text style={styles.label}>Departamento</Text>
+                <InputSelectCustom
+                    source={require('../../assets/img/point.png')}
+                    iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
+                    options={departments}
+                    renderProp="name"
+                    style={styles.input}
+                    onChange={option => handleChange('department', option)}
+                    value={data.department.name}
+                />
+                {(data.department.cities && data.department.cities.length > 0) &&
+                    <View>
                         <Text style={styles.label}>Municipio o ciudad</Text>
-                        <View style={styles.lineStyle}></View>
-                    </TouchableOpacity>
-                </View>
-                { <View style={{...styles.container,flex:0.1}}>
-                    {list ?
-                        Object.keys(getDepartament).map((key) => {
-                            console.log(key, getDepartament[key]);
-                            return (
-                                <ScrollView>
-                                    <TouchableOpacity onPress={() => {
-                                        setList(true)
-                                        setSelectionDepart(getDepartament[key])
-                                    }}>
-                                        <Text>{key}</Text>
-                                    </TouchableOpacity>
-                                </ScrollView>
-                            )
-                        })
-                        : null
-                    }
-                    {
-                        listCities ? selectionDepart.map((city) => {
-                            console.log(city);
-                            return (
-                                <ScrollView>
-                                    <TouchableOpacity onPress={() => {
-                                        dispatch(setCity(city))
-                                        props.navigation.navigate('Register')
-
-                                    }}>
-                                        <Text style={styles.label}>{city}</Text>
-                                        <View style={styles.lineStyle}></View>
-                                    </TouchableOpacity>
-                                </ScrollView>
-                            )
-                        }) : null
-                    }
-                </View> }
-        </View>
-    );
+                        <InputSelectCustom
+                            source={require('../../assets/img/point.png')}
+                            iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
+                            options={data.department.cities.map(city => ({ name: city }))}
+                            renderProp="name"
+                            style={styles.input}
+                            onChangeText={text =>
+                                handleChange('city', text)
+                            }
+                            value={data.city}
+                        />
+                    </View>
+                }
+            </View>
+            <View style={{ width: '100%', alignItems: 'center' }}>
+                <TouchableOpacity style={styles.btn} onPress={() => {
+                    handleSelectDepartment()
+                }}>
+                    <Text style={[styles.label, styles.btnText]}>{register.continueButton}</Text>
+                </TouchableOpacity>
+            </View>
+        </View >
+    )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'space-between',
+    btn: {
+        backgroundColor: '#E8A537',
+        width: WidthDP(250),
+        height: HeightDP(50),
+        justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: WidthDP(30),
-
+        borderRadius: 10
+    },
+    btnText: {
+        fontSize: FontSizeRP(20),
+    },
+    form: {
+        width: '100%',
+    },
+    label: {
+        fontFamily: 'Alegreya-VariableFont_wght',
+        fontSize: FontSizeRP(16),
+        fontWeight: '400',
+        lineHeight: 22,
+        marginVertical: HeightDP(4),
+    },
+    input: {
+        marginVertical: HeightDP(4)
+    },
+    titleContainer: {
+        width: '100%',
+        alignItems: 'flex-start',
     },
     titleStyle: {
         color: "#FFFFFF",
@@ -96,18 +129,36 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontSize: FontSizeRP(24),
         lineHeight: 29,
-    }, label: {
+        width: '80%',
+    },
+    screen: {
+        flex: 1,
+        paddingHorizontal: WidthDP(30),
+        backgroundColor: '#282828',
+        alignItems: 'flex-start',
+        justifyContent: 'space-evenly'
+    },
+    termsContainer: {
+        width: '100%',
+        marginVertical: HeightDP(4),
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    termsText: {
+        textDecorationLine: 'underline',
+        fontSize: FontSizeRP(20),
+    },
+    termsLink: {
+        color: '#EAAA41',
+        fontSize: FontSizeRP(20),
+    },
+    loginText: {
         fontFamily: 'Alegreya-VariableFont_wght',
-        fontSize: FontSizeRP(16),
-        fontWeight: '400',
-        lineHeight: 22,
-        marginVertical: HeightDP(2),
-    }, lineStyle: {
-        borderWidth: 3,
-        borderColor: '#FFFFFF',
-        width: '100%'
-
+        fontSize: FontSizeRP(10),
+        textAlign: 'center',
+    },
+    loginLink: {
+        color: '#EAAA41',
     }
 })
-
-export default Departaments;

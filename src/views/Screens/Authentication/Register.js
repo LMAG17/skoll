@@ -8,10 +8,14 @@ import { register as registerService } from '../../../services/ServiceInteractor
 import { FontSizeRP, HeightDP, WidthDP } from '../../../utils/CalculateSize'
 
 export default function Register(props) {
+
+    const navigation = props.navigation
+
     const dispatch = useDispatch()
+
     const { user, parameters } = useSelector(state => state)
 
-    const { register, appTheme } = parameters
+    const { register } = parameters
 
     const [data, setdata] = useState({
         "cellPhonePrefix": "+57",
@@ -22,18 +26,15 @@ export default function Register(props) {
             ...data,
             [key]: value
         })
-        console.log("data", data);
     }
 
     const handleGetPreRegister = async () => {
         try {
             let getRegister = await registerService(data)
-            console.log("getRegister", getRegister);
             props.navigation.navigate('ValidateOtpEmail')
             dispatch(setSessionId(getRegister.data.sessionId))
 
         } catch (error) {
-            console.log("ERROR DE VISTA", error);
         }
     }
 
@@ -44,7 +45,7 @@ export default function Register(props) {
                 firstname: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                city: city
+                city: user.city
             })
         }
     }, [user])
@@ -103,13 +104,16 @@ export default function Register(props) {
                         style={{ height: HeightDP(20), width: WidthDP(20) }}
                     />
                 </View>
-                <InputCustom
-                    source={require('../../../assets/img/point.png')}
-                    iconStyles={{ height: HeightDP(16), width: WidthDP(14) }}
-                    onChangeText={text =>
-                        handleChange('city', text)
-                    }
-                />
+                <TouchableOpacity style={styles.containerDepartment} onPress={() => navigation.navigate('Departaments')}>
+                    <Image
+                        style={styles.iconDepartment}
+                        source={require('../../../assets/img/point.png')}
+                    />
+                    <Text
+                    >
+                        {data.city}
+                    </Text>
+                </TouchableOpacity>
             </View>
             <View style={{ width: '100%', alignItems: 'center' }}>
                 <TouchableOpacity style={styles.btn} onPress={() => {
@@ -173,5 +177,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#282828',
         alignItems: 'flex-start',
         justifyContent: 'space-evenly'
-    }
+    },
+    containerDepartment: {
+        height: HeightDP(40),
+        flexDirection: 'row',
+        borderRadius: 8,
+        backgroundColor: '#2D2D2D',
+        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    iconDepartment: {
+        width: WidthDP(15),
+        height: HeightDP(20),
+        margin: WidthDP(8)
+    },
 })
