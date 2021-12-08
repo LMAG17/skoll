@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import InputCustom from '../../../components/InputCustom';
-import { handleLoginFacebook } from '../../../controllers/BaseController';
+import { handleLoginFacebook, handleGetData } from '../../../controllers/BaseController';
 import { setToken } from '../../../middlewares/token/tokenMiddleware';
 import { setUser } from '../../../middlewares/user/userMiddleware';
 import { getUserData, login as loginService } from '../../../services/ServiceInteractor';
@@ -55,22 +55,14 @@ export default function LoginScreen(props) {
         }
     }
 
-    const handleLoginResponse = async (responseLogin) => {
-        dispatch(setToken(responseLogin.token))
-        let clientData = await getUserData({ token: responseLogin.token })
-        dispatch(setUser({
-            ...user,
-            ...clientData.data,
-        }))
-        navigation.navigate('HomeScreen')
-    }
+
 
     const handleLogin = async () => {
         try {
             loginService(data).then(res => {
-                handleLoginResponse(res)
+                handleGetData(res)
             }).catch(err => {
-                handleLoginResponse(err)
+                handleGetData(err)
             })
         } catch (error) {
             console.log("login error", error)
