@@ -5,6 +5,7 @@ import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
 import { getParameters } from '../../controllers/BaseController';
 import { FontSizeRP, WidthDP } from '../../utils/CalculateSize';
+import {getServiceParameters} from '../../services/ServiceInteractor'
 
 export default function SplashScreen(props) {
 
@@ -19,6 +20,7 @@ export default function SplashScreen(props) {
     const { setisSetup } = props;
 
     useEffect(() => {
+        handleParametersService()
         getParameters({ dispatch });
         setTimeout(() => {
             if (progress < 100) {
@@ -30,6 +32,10 @@ export default function SplashScreen(props) {
         }, 500);
     }, [progress])
 
+    const handleParametersService = async () => {
+        let getServiceParams =await getServiceParameters();
+        console.log("PARAMETERS",getServiceParams);
+    }
     return (
         <View style={styles.screen}>
             <View style={[styles.container]} >

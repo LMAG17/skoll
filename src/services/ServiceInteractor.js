@@ -92,9 +92,9 @@ export async function finishRegistration({
     sessionId,
     timeExpiredToken,
     tokenFacebook,
-    userId,
+    uuid,
 }) {
-    return new Promise(async (resolve, reject) => {
+     return new Promise(async (resolve, reject) => {
         try {
             resolve(await CONSUME({
                 url: URLS.FINISH_REGISTRATION,
@@ -255,6 +255,18 @@ export async function departaments4() {
                 method: "GET",
             }))
         } catch (error) {
+            reject(error)
+        }
+    });
+}
+export async function getServiceParameters(){
+    return new Promise(async(resolve,reject)=>{
+        try{
+        resolve(await CONSUME({
+            url:URLS.PARAMETERS,
+            method: "GET",
+        }))
+        }catch(error){
             reject(error)
         }
     });

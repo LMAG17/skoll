@@ -1,5 +1,6 @@
 export const config = {
     baseUrl: 'http://54.219.38.254:8090/',
+    baseParams:'http://54.219.38.254:8096/',
     apis: {
         user: 'user/',
         oauth: 'oauth/',
@@ -15,6 +16,7 @@ export const config = {
         merchantFilter: "merchantFilter",
         services: "services",
         coordinates: "coordinates",
+        parameter:"parameter/"
     },
     endpoints: {
         login: 'login',
@@ -24,6 +26,7 @@ export const config = {
         enableOrderByName: 'enableOrderByName',
         resources: "resources/",
         category: "category",
+        general:"general"
     },
     otp: {
         generate: 'generate/',
@@ -54,4 +57,5 @@ export const URLS = {
     ADVERTISING: config.baseUrl + config.apis.advertising,
     EVENT: config.baseUrl + config.apis.event,
     DEPARTAMENTS: config.baseUrl + config.apis.departaments + config.endpoints.resources,
+    PARAMETERS:config.baseParams+config.apis.parameter+config.endpoints.general
 }
